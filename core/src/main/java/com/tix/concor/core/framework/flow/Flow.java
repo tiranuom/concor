@@ -2,7 +2,6 @@ package com.tix.concor.core.framework.flow;
 
 import com.tix.concor.core.framework.Join;
 import com.tix.concor.core.framework.taskWrapper.TaskWrapper;
-import jdk.internal.jline.internal.Nullable;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -27,7 +26,7 @@ public class Flow<A> {
         taskWrapper.apply(a, contextSupplier.get());
     }
 
-    Join assignJoin(String id, @Nullable Join join) {
+    Join assignJoin(String id, Join join) {
         return taskWrapper.assignJoinIfMatched(id, join);
     }
 

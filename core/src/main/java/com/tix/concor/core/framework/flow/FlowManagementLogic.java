@@ -1,9 +1,9 @@
 package com.tix.concor.core.framework.flow;
 
 import com.tix.concor.core.framework.Join;
-import com.tix.concor.common.JoinEvent;
-import com.tix.concor.common.JoinType;
-import com.tix.concor.common.TaskEvent;
+import com.tix.concor.core.framework.JoinEvent;
+import com.tix.concor.core.framework.JoinType;
+import com.tix.concor.core.framework.TaskEvent;
 
 import java.rmi.RemoteException;
 import java.util.HashMap;

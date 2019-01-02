@@ -1,7 +1,7 @@
 package com.tix.concor.common;
 
-import com.tix.concor.common.JoinEvent;
-import com.tix.concor.common.TaskEvent;
+import com.tix.concor.core.framework.JoinEvent;
+import com.tix.concor.core.framework.TaskEvent;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

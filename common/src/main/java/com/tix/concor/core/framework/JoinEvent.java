@@ -1,4 +1,4 @@
-package com.tix.concor.common;
+package com.tix.concor.core.framework;
 
 import java.util.List;
 import java.util.Objects;

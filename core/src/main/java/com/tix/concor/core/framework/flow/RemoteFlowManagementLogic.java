@@ -1,8 +1,8 @@
 package com.tix.concor.core.framework.flow;
 
-import com.tix.concor.common.JoinEvent;
+import com.tix.concor.core.framework.JoinEvent;
 import com.tix.concor.common.RMIBasedRemoteFlowManagementLogic;
-import com.tix.concor.common.TaskEvent;
+import com.tix.concor.core.framework.TaskEvent;
 
 import java.rmi.RemoteException;
 import java.util.*;
@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.reducing;
 import static java.util.stream.Collectors.toMap;
 
-public class RemoteFlowManagementLogic extends FlowManagementLogic implements RMIBasedRemoteFlowManagementLogic {
+public class RemoteFlowManagementLogic extends FlowManagementLogic {
 
     Map<Flow, Map<Integer, List<JoinEvent>>> joinStatMap = new HashMap<>();
     Map<Flow, Map<Integer, List<TaskEvent>>> taskStatMap = new HashMap<>();

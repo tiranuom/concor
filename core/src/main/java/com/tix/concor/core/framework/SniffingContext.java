@@ -1,8 +1,5 @@
 package com.tix.concor.core.framework;
 
-import com.tix.concor.common.JoinEvent;
-import com.tix.concor.common.TaskEvent;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;

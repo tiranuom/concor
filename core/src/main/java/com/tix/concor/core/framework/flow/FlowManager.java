@@ -4,6 +4,8 @@ import com.tix.concor.core.framework.Context;
 import com.tix.concor.core.framework.SniffingContext;
 import com.tix.concor.core.framework.StaticContext;
 
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
 import java.util.function.Supplier;
 
 public class FlowManager {
@@ -67,6 +69,8 @@ public class FlowManager {
         //Should be in a pattern of 2^x
         private int samplePeriod = 1;
         private long initialBfferSize = 1024;
+        private String host = "0.0.0.0";
+        private int port = 12099;
 
         public int getSamplePeriod() {
             return samplePeriod;
@@ -82,6 +86,22 @@ public class FlowManager {
 
         public void setInitialBfferSize(long initialBfferSize) {
             this.initialBfferSize = initialBfferSize;
+        }
+
+        public String getHost() {
+            return host;
+        }
+
+        public void setHost(String host) {
+            this.host = host;
+        }
+
+        public int getPort() {
+            return port;
+        }
+
+        public void setPort(int port) {
+            this.port = port;
         }
     }
 }

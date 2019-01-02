@@ -5,7 +5,6 @@ import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.EventTranslatorTwoArg;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
-import com.tix.concor.common.JoinType;
 
 import java.util.concurrent.Executor;
 
