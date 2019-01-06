@@ -31,6 +31,8 @@
         <module>common</module>
         <module>core</module>
         <module>remote-server</module>
+        <module>sample</module>
+        <module>sample/messaging-gateway</module>
     </modules>
 
 

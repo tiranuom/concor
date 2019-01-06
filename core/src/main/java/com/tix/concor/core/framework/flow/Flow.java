@@ -18,9 +18,9 @@ public class Flow<A> {
         this.id = id;
     }
 
-    public void apply(A a) throws Exception {
+    public void apply(A a) {
         if (contextSupplier == null) {
-            throw new Exception("AbstractFlow is not properly initialized. Please register the flow in flow manager.");
+            throw new RuntimeException("AbstractFlow is not properly initialized. Please register the flow in flow manager.");
         }
 
         taskWrapper.apply(a, contextSupplier.get());

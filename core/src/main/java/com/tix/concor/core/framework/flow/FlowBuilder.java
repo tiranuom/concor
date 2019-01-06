@@ -8,9 +8,9 @@ public class FlowBuilder<S, A> {
 
     private FlowBuilder<S, ?> previousFlowBuilder;
     private TaskWrapper<?, A> previousTaskWrapper;
-    private Flow flow;
+    private Flow<S> flow;
 
-    FlowBuilder(TaskWrapper<?, A> previousTaskWrapper, FlowBuilder<S, ?> previousFlowBuilder, Flow flow) {
+    FlowBuilder(TaskWrapper<?, A> previousTaskWrapper, FlowBuilder<S, ?> previousFlowBuilder, Flow<S> flow) {
         this.previousTaskWrapper = previousTaskWrapper;
         this.previousFlowBuilder = previousFlowBuilder;
         this.flow = flow;
@@ -33,9 +33,21 @@ public class FlowBuilder<S, A> {
         previousTaskWrapper.setNextTask(nextTaskWrapper);
         return new FlowBuilder<>(nextTaskWrapper, this, flow);
     }
-
+    
     public <B> FlowBuilder<S, B> mapSynchronized(SynchronizedTask<A, B> task, String id) {
         SynchronizedTaskWrapper<A, B> nextTaskWrapper = new SynchronizedTaskWrapper<>(task, flow.getId() + ":" + id + ":sync");
+        previousTaskWrapper.setNextTask(nextTaskWrapper);
+        return new FlowBuilder<>(nextTaskWrapper, this, flow);
+    }
+    
+    public <B> FlowBuilder<S, B> mapAsynchronous(AsynchronousTask<A, B> task) {
+        AsynchronousTaskWrapper<A, B> nextTaskWrapper = new AsynchronousTaskWrapper<>(task, flow.getId() + ":%d:sync");
+        previousTaskWrapper.setNextTask(nextTaskWrapper);
+        return new FlowBuilder<>(nextTaskWrapper, this, flow);
+    }
+    
+    public <B> FlowBuilder<S, B> mapAsynchronous(AsynchronousTask<A, B> task, String id) {
+        AsynchronousTaskWrapper<A, B> nextTaskWrapper = new AsynchronousTaskWrapper<>(task, flow.getId() + ":" + id + ":sync");
         previousTaskWrapper.setNextTask(nextTaskWrapper);
         return new FlowBuilder<>(nextTaskWrapper, this, flow);
     }
@@ -90,7 +102,7 @@ public class FlowBuilder<S, A> {
         return new FlowBuilder<>(nextTaskWrapper, this, flow);
     }
 
-    Flow build() {
+    public Flow<S> build() {
         TaskWrapper<A, Void> finalizedTask = new TaskWrapper<A, Void>(flow.getId() + ":%d:COMPLETE") {
             @Override
             protected void applyNext(Object o, Context context) {
@@ -98,6 +110,7 @@ public class FlowBuilder<S, A> {
             }
         };
         previousTaskWrapper.setNextTask(finalizedTask);
+        FlowManager.getInstance().register(flow);
         return flow;
     }
 }
