@@ -28,26 +28,26 @@ public class FlowBuilder<S, A> {
         return new FlowBuilder<>(nextTaskWrapper, this, flow);
     }
 
-    public <B> FlowBuilder<S, B> mapSynchronized(SynchronizedTask<A, B> task) {
-        SynchronizedTaskWrapper<A, B> nextTaskWrapper = new SynchronizedTaskWrapper<>(task, flow.getId() + ":%d:sync");
+    public <B> FlowBuilder<S, B> mapSingleThreaded(SingleThreadedTask<A, B> task) {
+        SingleThreadedTaskWrapper<A, B> nextTaskWrapper = new SingleThreadedTaskWrapper<>(task, flow.getId() + ":%d:sync");
         previousTaskWrapper.setNextTask(nextTaskWrapper);
         return new FlowBuilder<>(nextTaskWrapper, this, flow);
     }
     
-    public <B> FlowBuilder<S, B> mapSynchronized(SynchronizedTask<A, B> task, String id) {
-        SynchronizedTaskWrapper<A, B> nextTaskWrapper = new SynchronizedTaskWrapper<>(task, flow.getId() + ":" + id + ":sync");
+    public <B> FlowBuilder<S, B> mapSingleThreaded(SingleThreadedTask<A, B> task, String id) {
+        SingleThreadedTaskWrapper<A, B> nextTaskWrapper = new SingleThreadedTaskWrapper<>(task, flow.getId() + ":" + id + ":sync");
         previousTaskWrapper.setNextTask(nextTaskWrapper);
         return new FlowBuilder<>(nextTaskWrapper, this, flow);
     }
     
-    public <B> FlowBuilder<S, B> mapAsynchronous(AsynchronousTask<A, B> task) {
-        AsynchronousTaskWrapper<A, B> nextTaskWrapper = new AsynchronousTaskWrapper<>(task, flow.getId() + ":%d:sync");
+    public <B> FlowBuilder<S, B> mapSynchronizedRemote(SynchronizedRemoteTask<A, B> task) {
+        SynchronizedRemoteTaskWrapper<A, B> nextTaskWrapper = new SynchronizedRemoteTaskWrapper<>(task, flow.getId() + ":%d:sync");
         previousTaskWrapper.setNextTask(nextTaskWrapper);
         return new FlowBuilder<>(nextTaskWrapper, this, flow);
     }
     
-    public <B> FlowBuilder<S, B> mapAsynchronous(AsynchronousTask<A, B> task, String id) {
-        AsynchronousTaskWrapper<A, B> nextTaskWrapper = new AsynchronousTaskWrapper<>(task, flow.getId() + ":" + id + ":sync");
+    public <B> FlowBuilder<S, B> mapSynchronizedRemote(SynchronizedRemoteTask<A, B> task, String id) {
+        SynchronizedRemoteTaskWrapper<A, B> nextTaskWrapper = new SynchronizedRemoteTaskWrapper<>(task, flow.getId() + ":" + id + ":sync");
         previousTaskWrapper.setNextTask(nextTaskWrapper);
         return new FlowBuilder<>(nextTaskWrapper, this, flow);
     }

@@ -27,7 +27,7 @@ public class Flow<A> {
     }
 
     Join assignJoin(String id, Join join) {
-        return taskWrapper.assignJoinIfMatched(id, join);
+        return taskWrapper.assignJoinIfMatched(id, join, );
     }
 
     int nextIndex() {

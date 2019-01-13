@@ -59,6 +59,21 @@ public abstract class FlowManagementLogic {
         flow.assignJoin(taskId, join);
     }
 
+    public void removeJoin(String flowId, String taskId) throws RuntimeException {
+        Flow flow = flowMap.get(flowId);
+        if (flow == null) return;
+
+        flow.assignJoin(taskId, null);
+    }
+
+    public void moveJoin(String flowId, String fromTask, String toTask) {
+        Flow flow = flowMap.get(flowId);
+        if (flow == null) return;
+
+        Join join = flow.assignJoin(fromTask, null);
+        flow.assignJoin(toTask, join);
+    }
+
     public void addFlow(String id, Flow flow) {
         flowMap.put(id, flow);
     }

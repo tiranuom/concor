@@ -12,9 +12,9 @@ public class MOFlow {
     public void init() {
         flow = Flows.<String>create("mo-flow")
                 .map(new MOInTranslator())
-                .mapSynchronized(new SessionManager())
+                .mapSingleThreaded(new SessionManager())
                 .map(new MORouter())
-                .mapAsynchronous(new EndPointResolver())
+                .mapSynchronizedRemote(new EndPointResolver())
                 .map(new ATTranslator())
                 .bind(new ATMessageSender())
                 .forEach(new MOTransLogger())
