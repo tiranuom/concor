@@ -5,14 +5,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.remoting.rmi.RmiProxyFactoryBean;
 
+import java.rmi.NotBoundException;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+
 @Configuration
 public class ConcorConfiguration {
 
     @Bean
-    RmiProxyFactoryBean service() {
-        RmiProxyFactoryBean rmiProxyFactoryBean = new RmiProxyFactoryBean();
-        rmiProxyFactoryBean.setServiceUrl("rmi://localhost:12000/RMIBasedRemoteFlowManagementLogic");
-        rmiProxyFactoryBean.setServiceInterface(RMIBasedRemoteFlowManagementLogic.class);
-        return rmiProxyFactoryBean;
+    RMIBasedRemoteFlowManagementLogic remoteFlowManagementLogic() throws RemoteException, NotBoundException {
+        Registry registry = LocateRegistry.getRegistry(12099);
+        return (RMIBasedRemoteFlowManagementLogic) registry.lookup("RMIBasedRemoteFlowManagementLogic");
     }
 }

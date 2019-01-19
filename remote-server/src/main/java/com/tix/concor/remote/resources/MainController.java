@@ -21,17 +21,17 @@ public class MainController {
     @Autowired
     private RMIBasedRemoteFlowManagementLogic service;
 
-    @GetMapping("tasks")
+    @GetMapping("/tasks")
     public Mono<Map<String, List<TaskEvent>>> tasks() throws RemoteException {
         return Mono.just(service.taskEvents());
     }
 
-    @GetMapping("joins")
+    @GetMapping("/joins")
     public Mono<Map<String, List<JoinEvent>>> joins() throws RemoteException {
         return Mono.just(service.joinEvents());
     }
 
-    @GetMapping("schema")
+    @GetMapping("/schema")
     public Mono<Map<String, FlowInfo>> schema() throws RemoteException {
         return Mono.just(service.getSchema());
     }

@@ -1,6 +1,8 @@
 package com.tix.concor.core.framework;
 
-public class TaskInfo {
+import java.io.Serializable;
+
+public class TaskInfo implements Serializable {
     private String id;
     private String type;
 

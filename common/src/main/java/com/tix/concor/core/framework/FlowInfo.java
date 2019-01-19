@@ -1,8 +1,9 @@
 package com.tix.concor.core.framework;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class FlowInfo {
+public class FlowInfo implements Serializable {
 
     private String id;
     private List<TaskInfo> taskInfo;

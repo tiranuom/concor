@@ -61,6 +61,10 @@ public class FlowManager {
         };
     }
 
+    public FlowManagementLogic getFlowManagementLogic() {
+        return flowManagementLogic;
+    }
+
     interface ContextSupplier extends Supplier<Context> {
 
     }
@@ -69,7 +73,7 @@ public class FlowManager {
         //Should be in a pattern of 2^x
         private int samplePeriod = 1;
         private long initialBfferSize = 1024;
-        private String host = "0.0.0.0";
+        private String host = "localhost";
         private int port = 12099;
 
         public int getSamplePeriod() {
