@@ -1,10 +1,7 @@
 package com.tix.concor.core.framework.flow;
 
 import com.tix.concor.common.RMIBasedRemoteFlowManagementLogic;
-import com.tix.concor.core.framework.ConfigureStatus;
-import com.tix.concor.core.framework.JoinEvent;
-import com.tix.concor.core.framework.JoinType;
-import com.tix.concor.core.framework.TaskEvent;
+import com.tix.concor.core.framework.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -52,6 +49,11 @@ public class RemoteFlowManagementLogicAdaptor extends UnicastRemoteObject implem
     @Override
     public ConfigureStatus moveJoin(String flowId, String fromTask, String toTask) {
         return null;
+    }
+
+    @Override
+    public Map<String, FlowInfo> getSchema() throws RemoteException {
+        return remoteFlowManagementLogic.collectSchema();
     }
 
 

@@ -25,4 +25,9 @@ public class SimpleTaskWrapper<A, B> extends TaskWrapper<A, B> {
             nextTask.apply(null, context);
         }
     }
+
+    @Override
+    protected String eventType() {
+        return "simple";
+    }
 }

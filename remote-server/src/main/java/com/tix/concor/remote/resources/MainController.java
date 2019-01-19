@@ -1,5 +1,6 @@
 package com.tix.concor.remote.resources;
 
+import com.tix.concor.core.framework.FlowInfo;
 import com.tix.concor.core.framework.JoinEvent;
 import com.tix.concor.common.RMIBasedRemoteFlowManagementLogic;
 import com.tix.concor.core.framework.TaskEvent;
@@ -29,4 +30,11 @@ public class MainController {
     public Mono<Map<String, List<JoinEvent>>> joins() throws RemoteException {
         return Mono.just(service.joinEvents());
     }
+
+    @GetMapping("schema")
+    public Mono<Map<String, FlowInfo>> schema() throws RemoteException {
+        return Mono.just(service.getSchema());
+    }
+
+
 }

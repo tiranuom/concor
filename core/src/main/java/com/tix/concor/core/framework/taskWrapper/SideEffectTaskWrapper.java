@@ -25,4 +25,9 @@ public class SideEffectTaskWrapper<A> extends TaskWrapper<A, A> {
             nextTask.apply(null, context);
         }
     }
+
+    @Override
+    protected String eventType() {
+        return "side-effect";
+    }
 }

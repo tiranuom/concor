@@ -1,8 +1,13 @@
 package com.tix.concor.core.framework.flow;
 
+import com.tix.concor.core.framework.ConfigurationException;
+import com.tix.concor.core.framework.FlowInfo;
 import com.tix.concor.core.framework.Join;
+import com.tix.concor.core.framework.TaskInfo;
 import com.tix.concor.core.framework.taskWrapper.TaskWrapper;
 
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Flow<A> {
@@ -26,8 +31,18 @@ public class Flow<A> {
         taskWrapper.apply(a, contextSupplier.get());
     }
 
-    Join assignJoin(String id, Join join) {
-        return taskWrapper.assignJoinIfMatched(id, join, );
+    Join assignJoin(String id, Join join) throws RemoteException {
+        try {
+            return taskWrapper.assignJoinIfMatched(id, join, null);
+        } catch (ConfigurationException e) {
+            throw new RemoteException(e.getMessage(), e);
+        }
+    }
+
+    FlowInfo collectSchema() {
+        ArrayList<TaskInfo> taskInfo = new ArrayList<>();
+        taskWrapper.collectSchema(taskInfo);
+        return new FlowInfo(id, taskInfo);
     }
 
     int nextIndex() {

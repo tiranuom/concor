@@ -2,6 +2,7 @@ package com.tix.concor.core.framework.taskWrapper;
 
 import com.tix.concor.core.framework.*;
 
+import java.util.List;
 import java.util.Objects;
 
 public abstract class TaskWrapper<A, B> {
@@ -43,7 +44,7 @@ public abstract class TaskWrapper<A, B> {
 
     public Join assignJoinIfMatched(String id, Join join, JoinType previousJoinType) throws ConfigurationException {
         if (Objects.equals(this.id, id)) {
-            nextTask.assertJoinAssigbility(join == null ? previousJoinType : join.getJoinType());
+            nextTask.assertJoinAssignable(join == null ? previousJoinType : join.getJoinType());
 
             if (join == null) {
                 Join existingJoin = this.join;
@@ -66,14 +67,23 @@ public abstract class TaskWrapper<A, B> {
         return null;
     }
 
-    protected void assertJoinAssigbility(JoinType joinType) throws ConfigurationException {
-        if (this.join == null && this.nextTask != null) this.nextTask.assertJoinAssigbility(joinType);
+    protected void assertJoinAssignable(JoinType joinType) throws ConfigurationException {
+        if (this.join == null && this.nextTask != null) this.nextTask.assertJoinAssignable(joinType);
     }
 
     public void setIndexes(int index) {
         this.id = String.format(id, index);
         if (nextTask != null) {
             nextTask.setIndexes(index + 1);
+        }
+    }
+
+    protected abstract String eventType();
+
+    public void collectSchema(List<TaskInfo> taskInfo) {
+        taskInfo.add(new TaskInfo(id, eventType()));
+        if (nextTask != null) {
+            nextTask.collectSchema(taskInfo);
         }
     }
 }

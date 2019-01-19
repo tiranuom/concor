@@ -1,9 +1,6 @@
 package com.tix.concor.common;
 
-import com.tix.concor.core.framework.ConfigureStatus;
-import com.tix.concor.core.framework.JoinEvent;
-import com.tix.concor.core.framework.JoinType;
-import com.tix.concor.core.framework.TaskEvent;
+import com.tix.concor.core.framework.*;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -21,4 +18,6 @@ public interface RMIBasedRemoteFlowManagementLogic extends Remote {
     ConfigureStatus removeJoin(String flowId, String taskId);
 
     ConfigureStatus moveJoin(String flowId, String fromTask, String toTask);
+
+    Map<String, FlowInfo> getSchema() throws RemoteException;
 }

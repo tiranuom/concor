@@ -25,4 +25,9 @@ public class CatchTaskWrapper<A> extends TaskWrapper<A, A>{
             nextTask.apply(a, context);
         }
     }
+
+    @Override
+    protected String eventType() {
+        return "error";
+    }
 }

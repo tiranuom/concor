@@ -1,6 +1,10 @@
 import React from 'react'
 
-export default function ({x, y, color = "#ffffff", queueSize, type = 'ns'}) {
+export default function ({x, y, queue, type = 'ns'}) {
+
+    let color = queue.color || "red"
+    let queueSize = queue.queueSize;
+
     return <g transform={`translate(${x}, ${y})`}>
         <g transform={'scale(0.5)'}>
             <path d="M 0 15 L 20 30 L 0 45 Z" fill={color} strokeMiterlimit="10" pointerEvents="none"/>

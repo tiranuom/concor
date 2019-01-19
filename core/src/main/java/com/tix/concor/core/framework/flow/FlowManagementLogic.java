@@ -1,15 +1,13 @@
 package com.tix.concor.core.framework.flow;
 
-import com.tix.concor.core.framework.Join;
-import com.tix.concor.core.framework.JoinEvent;
-import com.tix.concor.core.framework.JoinType;
-import com.tix.concor.core.framework.TaskEvent;
+import com.tix.concor.core.framework.*;
 
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public abstract class FlowManagementLogic {
 
@@ -19,13 +17,13 @@ public abstract class FlowManagementLogic {
 
     public abstract void onStats(List<JoinEvent> joinStats, List<TaskEvent> taskStats, int nextIndex, Flow flow);
 
-    public void split(Flow flow, String taskId, Join join) {
+    public void split(Flow flow, String taskId, Join join) throws RemoteException {
         if (flow != null) {
             flow.assignJoin(taskId, join);
         }
     }
 
-    public Join join(Flow flow, String taskId) {
+    public Join join(Flow flow, String taskId) throws RemoteException {
         if (flow != null) {
             return flow.assignJoin(taskId, null);
         }
@@ -50,7 +48,7 @@ public abstract class FlowManagementLogic {
         flow.assignJoin(taskId, join);
     }
 
-    public void addMultiThreadJoin(String flowId, String taskId, int threadCount) throws RuntimeException {
+    public void addMultiThreadJoin(String flowId, String taskId, int threadCount) throws RuntimeException, RemoteException {
         Flow flow = flowMap.get(flowId);
         if (flow == null) return;
 
@@ -59,14 +57,14 @@ public abstract class FlowManagementLogic {
         flow.assignJoin(taskId, join);
     }
 
-    public void removeJoin(String flowId, String taskId) throws RuntimeException {
+    public void removeJoin(String flowId, String taskId) throws RuntimeException, RemoteException {
         Flow flow = flowMap.get(flowId);
         if (flow == null) return;
 
         flow.assignJoin(taskId, null);
     }
 
-    public void moveJoin(String flowId, String fromTask, String toTask) {
+    public void moveJoin(String flowId, String fromTask, String toTask) throws RemoteException {
         Flow flow = flowMap.get(flowId);
         if (flow == null) return;
 
@@ -84,5 +82,9 @@ public abstract class FlowManagementLogic {
 
     public void setInitialBufferSize(int initialBufferSize) {
         this.initialBufferSize = initialBufferSize;
+    }
+
+    public Map<String, FlowInfo> collectSchema() {
+        return flowMap.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().collectSchema()));
     }
 }

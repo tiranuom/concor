@@ -105,6 +105,11 @@ public class FlowBuilder<S, A> {
     public Flow<S> build() {
         TaskWrapper<A, Void> finalizedTask = new TaskWrapper<A, Void>(flow.getId() + ":%d:COMPLETE") {
             @Override
+            protected String eventType() {
+                return "end";
+            }
+
+            @Override
             protected void applyNext(Object o, Context context) {
                 context.complete();
             }

@@ -12,6 +12,11 @@ public class Flows {
             protected void applyNext(A a, Context context) {
                 nextTask.apply(a, context);
             }
+
+            @Override
+            protected String eventType() {
+                return "start";
+            }
         };
         Flow<A> flow = new Flow<>(taskWrapper, id);
 

@@ -28,8 +28,13 @@ public class SynchronizedRemoteTaskWrapper<A, B> extends TaskWrapper<A, B> {
     }
 
     @Override
-    protected void assertJoinAssigbility(JoinType joinType) throws ConfigurationException {
+    protected void assertJoinAssignable(JoinType joinType) throws ConfigurationException {
         if (joinType == JoinType.SINGLE_THREADED) throw new ConfigurationException("", this.id);
-        super.assertJoinAssigbility(joinType);
+        super.assertJoinAssignable(joinType);
+    }
+
+    @Override
+    protected String eventType() {
+        return "synchronized-remote";
     }
 }

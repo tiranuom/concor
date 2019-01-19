@@ -14,7 +14,7 @@ public class FlowManager {
     private static final StaticContext STATIC_CONTEXT = new StaticContext();
 
     private FlowManagerConfig config;
-    private FlowManagementLogic flowManagementLogic;
+    private FlowManagementLogic flowManagementLogic = new RemoteFlowManagementLogic();
 
     private FlowManager() {
     }
