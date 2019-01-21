@@ -17,7 +17,7 @@ public class SynchronizedRemoteTaskWrapper<A, B> extends TaskWrapper<A, B> {
     protected void applyNext(A a, Context context) {
         if (context.isSuccessful()) {
             try {
-                nextTask.applyNext(task.apply(a), context);
+                nextTask.apply(task.apply(a), context);
             } catch (Throwable throwable) {
                 context.setThrowable(throwable);
                 nextTask.apply(null, context);

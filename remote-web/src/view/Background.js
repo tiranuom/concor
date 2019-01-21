@@ -1,58 +1,54 @@
-import React from 'react'
+import React, {Component} from 'react'
 import Canves from "./serverView/Canves";
+import {connect} from 'react-redux'
+import {getSchema, getStats} from "../actions/actions";
 
-export default function () {
+class Background extends Component {
 
-    let flows = [
-        {
-            id: "MO Flow",
-            tasks: [
-                {
-                    id: "Start",
-                    type: "start"
-                },
-                {
-                    id: "Mobile Originated Translator",
-                    type: "simple"
-                },
-                {
-                    id: "Session Manager",
-                    type: "single-threaded"
-                },
-                {
-                    id: "MO Route",
-                    type: "simple"
-                },
-                {
-                    id: "End Point Resolver",
-                    type: "synchronized-remote"
-                },
-                {
-                    id: "AT Translator",
-                    type: "simple"
-                },
-                {
-                    id: "AT Message Sender",
-                    type: "asynchronous-remote"
-                },
-                {
-                    id: "Trans Logger",
-                    type: "side-effect"
-                },
-                {
-                    id: "Error Handler",
-                    type: "catch"
-                },
-                {
-                    id: "End",
-                    type: "end"
-                }
-            ]
-        }
-    ];
+    componentDidMount() {
+        this.props.loadSchema();
+        setInterval(this.props.loadStats, 1000)
+    }
 
-    return <div>
-        <header>Server 1</header>
-        <Canves flows={flows}/>
-    </div>
+    render() {
+        let {flows} = this.props;
+        return <div>
+            {!!flows &&
+            <Canves flows={flows}/>
+            }
+        </div>
+    }
 }
+
+const mapStateToProps = (state) => {
+    if (state.schema.status === "success") {
+        var flows = Object.values(state.schema.data)
+        flows.forEach(e => e.tasks = e.tasks || e.taskInfo);
+
+        if (state.stats.status === "success") {
+            flows.forEach(flow => {
+                var flows = state.stats.data.tasks;
+                var flowStat = flows[flow.id]||[];
+                flow.tasks.forEach(task => {
+                    var taskStat = flowStat.find(e => e.id === task.id);
+                    if (!!taskStat) {
+                        task.latency = taskStat.latency
+                    }
+                })
+            })
+        }
+
+        return ({
+            flows
+        });
+    } else {
+        return {}
+    }
+};
+
+const mapDispatchToProps = dispatch => ({
+    loadSchema: () => dispatch(getSchema()),
+    loadStats: () => dispatch(getStats())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Background)

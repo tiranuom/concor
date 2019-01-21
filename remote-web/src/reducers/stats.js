@@ -1,17 +1,17 @@
-const schema = (state = {}, action) => {
+const stats = (state = {}, action) => {
     switch (action.type) {
-        case 'SCHEMA/PENDING':
+        case 'STATS/PENDING':
             return {
                 ...state,
                 status: 'pending'
             };
-        case 'SCHEMA/SUCCESS':
+        case 'STATS/SUCCESS':
             return {
                 ...state,
                 status: 'success',
                 data: action.payload
             };
-        case 'SCHEMA/FAILED':
+        case 'STATS/FAILED':
             return {
                 ...state,
                 status: 'error',
@@ -22,4 +22,4 @@ const schema = (state = {}, action) => {
     }
 };
 
-export default schema
+export default stats

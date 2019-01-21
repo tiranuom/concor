@@ -11,13 +11,13 @@ public class MOFlow {
 
     public void init() {
         flow = Flows.<String>create("mo-flow")
-                .map(new MOInTranslator())
-                .mapSingleThreaded(new SessionManager())
-                .map(new MORouter())
-                .mapSynchronizedRemote(new EndPointResolver())
-                .map(new ATTranslator())
-                .bind(new ATMessageSender())
-                .forEach(new MOTransLogger())
+                .map(new MOInTranslator(), "1")
+                .mapSingleThreaded(new SessionManager(), "2")
+                .map(new MORouter(), "3")
+                .mapSynchronizedRemote(new EndPointResolver(), "4")
+                .map(new ATTranslator(), "5")
+                .bind(new ATMessageSender(), "6")
+                .forEach(new MOTransLogger(), "7")
                 .build();
 
     }

@@ -1,7 +1,7 @@
 import React from 'react'
 import Queue from "./Queue";
 
-export default function({x, y, latency = 0, flowId, itemId, onClick = (e) => {}, queue, task}) {
+export default function({x, y, flowId, itemId, onClick = (e) => {}, queue, task}) {
 
     return <g transform={`translate(${x}, ${y}) scale(0.5)`} >
         <ellipse cx="115" cy="85" rx="55" ry="55" fill="#ffffff" stroke="#000000" pointerEvents="none"/>
@@ -22,7 +22,7 @@ export default function({x, y, latency = 0, flowId, itemId, onClick = (e) => {},
             <path d="M 0 0 L 120 0" fill="none" stroke="#000000" strokeMiterlimit="10" pointerEvents="none"/>
             <path d="M 04 -4 L 04 4" fill="none" stroke="#000000" strokeMiterlimit="10" pointerEvents="none"/>
             <path d="M 116 4 L 116 -4" fill="none" stroke="#000000" strokeMiterlimit="10" pointerEvents="none"/>
-            <text x="60" y="20" fill="#000000" textAnchor="middle" fontSize="24px" fontFamily="Helvetica" alignmentBaseline={"central"}>{latency}
+            <text x="60" y="20" fill="#000000" textAnchor="middle" fontSize="24px" fontFamily="Helvetica" alignmentBaseline={"central"}>{task.latency}
             </text>
         </g>
         <g transform="translate(60,30)">

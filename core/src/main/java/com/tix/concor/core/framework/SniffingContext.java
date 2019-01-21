@@ -10,6 +10,7 @@ public class SniffingContext extends Context {
     private List<JoinEvent> joinEvents = new ArrayList<>();
     private List<TaskEvent> taskEvents = new ArrayList<>();
     private BiConsumer<List<JoinEvent>, List<TaskEvent>> completeHandler;
+    private String previousTaskId = "", previousJoinId = "";
 
     public SniffingContext(BiConsumer<List<JoinEvent>, List<TaskEvent>> completeHandler) {
         this.completeHandler = completeHandler;
@@ -22,7 +23,8 @@ public class SniffingContext extends Context {
         long bufferSize = join.getBufferSize();
         long latency = currentNano - lastJoinUpdatedNano;
 
-        joinEvents.add(new JoinEvent(id, join.getTaskId(), latency, bufferSize, join.getJoinType()));
+        joinEvents.add(new JoinEvent(previousJoinId, join.getTaskId(), latency, bufferSize, join.getJoinType()));
+        this.previousJoinId = id;
         lastJoinUpdatedNano = currentNano;
     }
 
@@ -31,7 +33,8 @@ public class SniffingContext extends Context {
         long currentNano = System.nanoTime();
         long latency = currentNano - lastTaskUpdatedNano;
 
-        taskEvents.add(new TaskEvent(id, latency));
+        taskEvents.add(new TaskEvent(previousTaskId, latency));
+        this.previousTaskId = id;
         this.lastTaskUpdatedNano = currentNano;
     }
 

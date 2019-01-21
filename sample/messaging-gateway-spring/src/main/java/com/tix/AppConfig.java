@@ -20,6 +20,8 @@ import org.springframework.remoting.rmi.RmiServiceExporter;
 
 import javax.sql.DataSource;
 import java.rmi.RemoteException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class AppConfig {
@@ -29,6 +31,7 @@ public class AppConfig {
     public MOFlow moFlow() {
         MOFlow moFlow = new MOFlow();
         moFlow.init();
+        Executors.newScheduledThreadPool(100).scheduleAtFixedRate((Runnable) () -> moFlow.apply(""), 100, 100, TimeUnit.MICROSECONDS);
         return moFlow;
     }
 

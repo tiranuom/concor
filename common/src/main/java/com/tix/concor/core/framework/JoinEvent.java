@@ -1,9 +1,10 @@
 package com.tix.concor.core.framework;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public class JoinEvent {
+public class JoinEvent implements Serializable {
 
     private String id;
     private String taskId;

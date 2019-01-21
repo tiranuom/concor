@@ -7,6 +7,7 @@ public class MOInTranslator implements SimpleTask<String, MOMessage> {
 
     @Override
     public MOMessage apply(String s) throws Throwable {
-        return null;
+//        Thread.sleep(10);
+        return new MOMessage();
     }
 }

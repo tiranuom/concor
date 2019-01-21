@@ -16,7 +16,7 @@ public class TransitionTaskWrapper<A, B> extends TaskWrapper<A, B> {
     protected void applyNext(A a, Context context) {
         if (context.isSuccessful()) {
             try {
-                task.apply(a, callable -> nextTask.applyNext(callable.call(), context));
+                task.apply(a, callable -> nextTask.apply(callable.call(), context));
             } catch (Throwable throwable) {
                 context.setThrowable(throwable);
                 nextTask.apply(null, context);
