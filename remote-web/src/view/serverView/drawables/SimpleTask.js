@@ -1,7 +1,13 @@
 import React from 'react'
 import Queue from "./Queue";
+import {Button, OverlayTrigger, Popover} from "react-bootstrap";
+import JoinSelection from "./popover/JoinSelection";
 
-export default function({x, y, queue, task, itemId, onClick}) {
+export default function({x, y, queue, task, itemId, onClick, flowId}) {
+
+    const popover = <Popover id="popover-positioned-left" title="Popover left" >
+
+    </Popover>
 
     return <g transform={`translate(${x}, ${y}) scale(0.5)`} >
         <rect x="4" y="30" width="224" height="110" fill="#ffffff" stroke="#000000" pointerEvents="none"/>
@@ -19,12 +25,12 @@ export default function({x, y, queue, task, itemId, onClick}) {
         </g>
         <rect x="73" y="30" width="155" height="110" fill="#ffffff" stroke="#000000" pointerEvents="none"/>
 
-        {!!queue &&
-        <Queue x={15} y={70} queue={queue}/>
+        {!!task.queue &&
+        <Queue x={15} y={70} queue={task.queue}/>
         }
         <g transform="translate(0,30)">
             <foreignObject>
-                <div onClick={onClick && onClick.bind(this)} style={{width: 80, height: 110, opacity: 0.1}}></div>
+                <JoinSelection id={task.id} flowId={flowId}/>
             </foreignObject>
         </g>
     </g>

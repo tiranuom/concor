@@ -1,7 +1,8 @@
 import React from 'react'
 import Queue from "./Queue";
+import JoinSelection from "./popover/JoinSelection";
 
-export default function({x, y, task, itemId, queue, onClick}) {
+export default function({x, y, task, itemId, queue, flowId}) {
 
     return <g transform={`translate(${x}, ${y}) scale(0.5)`} >
         <rect x="4" y="30" width="224" height="110" fill="#ffffff" stroke="#000000" pointerEvents="none"/>
@@ -27,12 +28,12 @@ export default function({x, y, task, itemId, queue, onClick}) {
             <text x="140" y="140" fill="#000000" textAnchor="middle" fontSize="15px" fontFamily="Helvetica" alignmentBaseline={"central"}>SideEffect
             </text>
         </g>
-        {queue &&
-        <Queue x={15} y={70} queue={queue}/>
+        {task.queue &&
+        <Queue x={15} y={70} queue={task.queue}/>
         }
         <g transform="translate(0,30)">
             <foreignObject>
-                <div onClick={onClick && onClick.bind(this)} style={{width: 80, height: 110, opacity: 0.1}}></div>
+                <JoinSelection id={task.id} flowId={flowId}/>
             </foreignObject>
         </g>
     </g>

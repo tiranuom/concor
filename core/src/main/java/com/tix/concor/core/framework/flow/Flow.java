@@ -46,7 +46,7 @@ public class Flow<A> {
     }
 
     int nextIndex() {
-        return sampleCounter.incrementAndGet();
+        return sampleCounter.incrementAndGet() & 0x00000011;
     }
 
     public void init(FlowManager.ContextSupplier contextSupplier) {

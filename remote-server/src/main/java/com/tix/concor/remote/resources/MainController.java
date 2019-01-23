@@ -1,15 +1,12 @@
 package com.tix.concor.remote.resources;
 
-import com.tix.concor.core.framework.FlowInfo;
-import com.tix.concor.core.framework.JoinEvent;
+import com.tix.concor.core.framework.*;
 import com.tix.concor.common.RMIBasedRemoteFlowManagementLogic;
-import com.tix.concor.core.framework.TaskEvent;
+import com.tix.concor.remote.domain.AddJoinRequest;
+import com.tix.concor.remote.domain.RemoveJoinRequest;
 import com.tix.concor.remote.domain.Stats;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.rmi.RemoteException;
@@ -45,6 +42,18 @@ public class MainController {
     @GetMapping("/schema")
     public Mono<Map<String, FlowInfo>> schema() throws RemoteException {
         return Mono.just(service.getSchema());
+    }
+
+    @CrossOrigin
+    @PostMapping("/join/add")
+    public Mono<ConfigureStatus> addJoin(@RequestBody AddJoinRequest addJoinRequest) throws RemoteException {
+        return Mono.just(service.addJoin(addJoinRequest.getFlowId(), addJoinRequest.getTaskId(), addJoinRequest.getJoinType(), addJoinRequest.getThreadCount()));
+    }
+
+    @CrossOrigin
+    @PostMapping("/join/remove")
+    public Mono<ConfigureStatus> removeJoin(@RequestBody RemoveJoinRequest removeJoinRequest) throws RemoteException {
+        return Mono.just(service.removeJoin(removeJoinRequest.getFlowId(), removeJoinRequest.getTaskId()));
     }
 
 

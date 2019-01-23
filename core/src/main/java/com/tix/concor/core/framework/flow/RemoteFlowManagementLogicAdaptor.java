@@ -43,12 +43,12 @@ public class RemoteFlowManagementLogicAdaptor extends UnicastRemoteObject implem
 
     @Override
     public ConfigureStatus addJoin(String flowId, String taskId, JoinType joinType, int threadCount) throws RemoteException {
-        return null;
+        return remoteFlowManagementLogic.addJoin(flowId, taskId, joinType, threadCount);
     }
 
     @Override
     public ConfigureStatus removeJoin(String flowId, String taskId) throws RemoteException {
-        return null;
+        return remoteFlowManagementLogic.removeJoin(flowId, taskId);
     }
 
     @Override

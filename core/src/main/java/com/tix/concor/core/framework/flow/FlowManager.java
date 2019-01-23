@@ -75,6 +75,7 @@ public class FlowManager {
         private long initialBfferSize = 1024;
         private String host = "localhost";
         private int port = 12099;
+        private int bufferSize = 1024;
 
         public int getSamplePeriod() {
             return samplePeriod;
@@ -106,6 +107,14 @@ public class FlowManager {
 
         public void setPort(int port) {
             this.port = port;
+        }
+
+        public int getBufferSize() {
+            return bufferSize;
+        }
+
+        public void setBufferSize(int bufferSize) {
+            this.bufferSize = bufferSize;
         }
     }
 }

@@ -19,6 +19,7 @@ public class Boot {
         try {
             FlowManager.getInstance().reconfigure(flowManagerConfig);
             RemoteFlowManagementLogic remoteFlowManagementLogic = new RemoteFlowManagementLogic();
+            remoteFlowManagementLogic.setInitialBufferSize(flowManagerConfig.getBufferSize());
             RemoteFlowManagementLogicAdaptor adaptor = new RemoteFlowManagementLogicAdaptor(remoteFlowManagementLogic, flowManagerConfig);
             adaptor.init();
             FlowManager.getInstance().setFlowManagementLogic(remoteFlowManagementLogic);

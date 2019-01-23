@@ -1,6 +1,8 @@
 package com.tix.concor.core.framework;
 
-public class ConfigureStatus {
+import java.io.Serializable;
+
+public class ConfigureStatus implements Serializable {
 
     private boolean success;
     private String error;

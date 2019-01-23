@@ -1,7 +1,7 @@
 import React from 'react'
 import Queue from "./Queue";
 
-export default function({x, y, flowId, itemId, onClick = (e) => {}, queue, task}) {
+export default function({x, y, flowId, itemId, onClick = (e) => {}, task}) {
 
     return <g transform={`translate(${x}, ${y}) scale(0.5)`} >
         <ellipse cx="115" cy="85" rx="55" ry="55" fill="#ffffff" stroke="#000000" pointerEvents="none"/>
@@ -14,8 +14,8 @@ export default function({x, y, flowId, itemId, onClick = (e) => {}, queue, task}
             <text x="18" y="12" fill="#000000" textAnchor="middle" fontSize="24px" fontFamily="Helvetica">{itemId}
             </text>
         </g>
-        {!!queue &&
-        <Queue x={125} y={70} queue={queue} type={'s'}/>
+        {!!task.queue &&
+        <Queue x={125} y={70} queue={task.queue} type={'s'}/>
         }
 
         <g transform="translate(65,220)">

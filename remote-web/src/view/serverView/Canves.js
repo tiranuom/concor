@@ -11,7 +11,7 @@ export default function ({flows}) {
                     <path d="M0,0 L0,6 L9,3 z" />
                 </marker>
             </defs>
-            {flows.map((flow, index) => <Flow flow={flow} yOffset={(index + 1) * 100} key={flow.id}/>)}
+            {flows.map((flow, index) => <Flow flow={flow} yOffset={(index + 1) * 100} key={flow.id} />)}
 
             {/*<path d={lineFunction(lineData)} stroke={'black'} strokeWidth={2} fill={'none'} markerEnd={"url(#arrow)"}/>*/}
             {/*<foreignObject x={200} y={200} width={100} height={100}>

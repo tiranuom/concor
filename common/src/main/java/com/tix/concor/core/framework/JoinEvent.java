@@ -24,6 +24,10 @@ public class JoinEvent implements Serializable {
         return EventType.JOIN;
     }
 
+    public String getTaskId() {
+        return taskId;
+    }
+
     public String getId() {
         return id;
     }

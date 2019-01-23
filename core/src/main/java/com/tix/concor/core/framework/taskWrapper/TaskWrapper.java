@@ -44,7 +44,7 @@ public abstract class TaskWrapper<A, B> {
 
     public Join assignJoinIfMatched(String id, Join join, JoinType previousJoinType) throws ConfigurationException {
         if (Objects.equals(this.id, id)) {
-            nextTask.assertJoinAssignable(join == null ? previousJoinType : join.getJoinType());
+            this.assertJoinAssignable(join == null ? previousJoinType : join.getJoinType(), id);
 
             if (join == null) {
                 Join existingJoin = this.join;
@@ -67,8 +67,22 @@ public abstract class TaskWrapper<A, B> {
         return null;
     }
 
-    protected void assertJoinAssignable(JoinType joinType) throws ConfigurationException {
-        if (this.join == null && this.nextTask != null) this.nextTask.assertJoinAssignable(joinType);
+    protected void assertJoinAssignable(JoinType joinType, String taskId) throws ConfigurationException {
+        if (Objects.equals(taskId, id)) {
+            if (this.nextTask != null) {
+                assertLocalJoinAssignability(joinType);
+                this.nextTask.assertJoinAssignable(joinType, taskId);
+            }
+        } else {
+            if (this.join == null && this.nextTask != null) {
+                assertLocalJoinAssignability(joinType);
+                this.nextTask.assertJoinAssignable(joinType, taskId);
+            }
+        }
+    }
+
+    protected void assertLocalJoinAssignability(JoinType joinType) throws ConfigurationException {
+
     }
 
     public void setIndexes(int index) {

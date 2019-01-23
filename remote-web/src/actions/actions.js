@@ -15,3 +15,29 @@ export const getStats = () => ({
         types: ["STATS/PENDING", "STATS/SUCCESS", "STATS/FAILED"]
     }
 });
+
+export const updateJoin = (data) => {
+    if (data.joinType === 'NULL') {
+        return {
+            [RSAA] : {
+                endpoint: 'http://localhost:9090/rest/join/remove',
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: { 'Content-Type': 'application/json'},
+                types: ["JOIN/PENDING", "JOIN/SUCCESS", "JOIN/FAILED"]
+            }
+        }
+    } else return {
+        [RSAA] : {
+            endpoint: 'http://localhost:9090/rest/join/add',
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: { 'Content-Type': 'application/json'},
+            types: ["JOIN/PENDING", "JOIN/SUCCESS", "JOIN/FAILED"]
+        }
+    }
+}
+
+export const clearError = () => ({
+    type: 'ERROR/CLEAR'
+})

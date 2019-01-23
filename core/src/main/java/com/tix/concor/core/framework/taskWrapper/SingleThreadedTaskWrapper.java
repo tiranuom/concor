@@ -29,9 +29,8 @@ public class SingleThreadedTaskWrapper<A, B> extends TaskWrapper<A, B> {
     }
 
     @Override
-    protected void assertJoinAssignable(JoinType joinType) throws ConfigurationException {
+    protected void assertLocalJoinAssignability(JoinType joinType) throws ConfigurationException {
         if (joinType != JoinType.SINGLE_THREADED) throw new ConfigurationException("Single Threaded task should not be catered with a multithreaded thread pool.", this.id);
-        super.assertJoinAssignable(joinType);
     }
 
     @Override

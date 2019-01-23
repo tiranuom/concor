@@ -1,7 +1,8 @@
 import React from 'react'
 import Queue from "./Queue";
+import JoinSelection from "./popover/JoinSelection";
 
-export default function({x, y, task, itemId, queue, onClick}) {
+export default function({x, y, task, itemId, flowId}) {
 
     return <g transform={`translate(${x}, ${y}) scale(0.5)`} >
         <rect x="4" y="30" width="224" height="110" fill="#ffffff" stroke="#000000" pointerEvents="none"/>
@@ -22,12 +23,12 @@ export default function({x, y, task, itemId, queue, onClick}) {
             <path d="M 186.92 45.34 L 191.32 49.74 L 178.35 49.65 L 178.26 36.68 L 182.66 41.08 L 219.08 4.66 L 214.68 0.26 L 227.65 0.35 L 227.74 13.32 L 223.34 8.92 Z"
                   fill="none" stroke="#000000" strokeLinejoin="round" strokeMiterlimit="10" pointerEvents="none"/>
         </g>
-        {queue &&
-        <Queue x={15} y={70} color={'yellow'} queueSize={queue.queueSize}/>
+        {!!task.queue &&
+        <Queue x={15} y={70} color={'yellow'} queue={task.queue}/>
         }
         <g transform="translate(0,30)">
             <foreignObject>
-                <div onClick={onClick && onClick.bind(this)} style={{width: 80, height: 110, opacity: 0.1}}></div>
+                <JoinSelection id={task.id} flowId={flowId}/>
             </foreignObject>
         </g>
     </g>

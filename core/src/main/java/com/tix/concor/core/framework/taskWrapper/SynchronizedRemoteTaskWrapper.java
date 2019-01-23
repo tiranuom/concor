@@ -28,9 +28,8 @@ public class SynchronizedRemoteTaskWrapper<A, B> extends TaskWrapper<A, B> {
     }
 
     @Override
-    protected void assertJoinAssignable(JoinType joinType) throws ConfigurationException {
-        if (joinType == JoinType.SINGLE_THREADED) throw new ConfigurationException("", this.id);
-        super.assertJoinAssignable(joinType);
+    protected void assertLocalJoinAssignability(JoinType joinType) throws ConfigurationException {
+        if (joinType == JoinType.SINGLE_THREADED) throw new ConfigurationException("Cannot configure single thread for synchronized remote call", this.id);
     }
 
     @Override
