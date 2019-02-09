@@ -1,14 +1,12 @@
 package com.tix.concor.core.framework.flow;
 
-import com.tix.concor.core.framework.ConfigurationException;
-import com.tix.concor.core.framework.FlowInfo;
-import com.tix.concor.core.framework.Join;
-import com.tix.concor.core.framework.TaskInfo;
+import com.tix.concor.core.framework.*;
 import com.tix.concor.core.framework.taskWrapper.TaskWrapper;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 public class Flow<A> {
 
@@ -49,9 +47,11 @@ public class Flow<A> {
         return sampleCounter.incrementAndGet() & 0x00000011;
     }
 
-    public void init(FlowManager.ContextSupplier contextSupplier) {
+    public void init(FlowManager.ContextSupplier contextSupplier, Function<JoinType, Join> joinGenerator) {
         this.contextSupplier = contextSupplier;
         taskWrapper.setIndexes(0);
+        taskWrapper.init(new JoinAssignmentFunction(joinGenerator));
+        System.out.println(taskWrapper);
     }
 
     public String getId() {

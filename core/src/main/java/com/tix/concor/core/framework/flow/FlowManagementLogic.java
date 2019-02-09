@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public abstract class FlowManagementLogic {
@@ -16,19 +17,6 @@ public abstract class FlowManagementLogic {
     private int counter = 0;
 
     public abstract void onStats(List<JoinEvent> joinStats, List<TaskEvent> taskStats, int nextIndex, Flow flow);
-
-    public void split(Flow flow, String taskId, Join join) throws RemoteException {
-        if (flow != null) {
-            flow.assignJoin(taskId, join);
-        }
-    }
-
-    public Join join(Flow flow, String taskId) throws RemoteException {
-        if (flow != null) {
-            return flow.assignJoin(taskId, null);
-        }
-        return null;
-    }
 
     public ConfigureStatus addSingleThreadJoin(String flowId, String taskId) throws RemoteException {
         Flow flow = flowMap.get(flowId);
@@ -125,5 +113,23 @@ public abstract class FlowManagementLogic {
 
     public Map<String, FlowInfo> collectSchema() {
         return flowMap.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().collectSchema()));
+    }
+
+    public Function<JoinType, Join> getJoinGenerator() {
+        return joinType -> {
+            Join join;
+            switch (joinType) {
+                case SINGLE_THREADED:
+                    join = new Join(initialBufferSize, Executors.newSingleThreadExecutor(), ("join" + ":" + ++counter), JoinType.SINGLE_THREADED);
+                    break;
+                case CACHED:
+                    join =  new Join(initialBufferSize, Executors.newCachedThreadPool(), ("join" + ":" + ++counter), JoinType.CACHED);
+                    break;
+                default:
+                    join = new Join(initialBufferSize, Executors.newFixedThreadPool(10), ("join" + ":" + ++counter), JoinType.MULTI_THREADED);
+            }
+            join.init();
+            return join;
+        };
     }
 }

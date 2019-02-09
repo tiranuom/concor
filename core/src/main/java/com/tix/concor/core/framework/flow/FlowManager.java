@@ -4,8 +4,6 @@ import com.tix.concor.core.framework.Context;
 import com.tix.concor.core.framework.SniffingContext;
 import com.tix.concor.core.framework.StaticContext;
 
-import java.net.MalformedURLException;
-import java.rmi.RemoteException;
 import java.util.function.Supplier;
 
 public class FlowManager {
@@ -32,7 +30,7 @@ public class FlowManager {
     }
 
     public void register(Flow flow) {
-        flow.init(getContextSupplier(flow));
+        flow.init(getContextSupplier(flow), flowManagementLogic.getJoinGenerator());
         flowManagementLogic.addFlow(flow.getId(), flow);
     }
 

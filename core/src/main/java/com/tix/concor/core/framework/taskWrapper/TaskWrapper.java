@@ -12,11 +12,17 @@ public abstract class TaskWrapper<A, B> {
 
     private Join join = null;
 
+    protected String id;
+
     public TaskWrapper(String id) {
         this.id = id;
     }
 
-    protected String id;
+    public void init(JoinAssignmentFunction joinAssignmentFunction) {
+        System.out.println("Initializing " + id + " without join");
+        joinAssignmentFunction.setTaskWrapper(this);
+        if (nextTask != null) nextTask.init(joinAssignmentFunction);
+    }
 
     public void apply(A a, Context context) {
         context.hitTask(id);
@@ -100,5 +106,15 @@ public abstract class TaskWrapper<A, B> {
         if (nextTask != null) {
             nextTask.collectSchema(taskInfo);
         }
+    }
+
+    public void assignJoin(Join join) throws ConfigurationException {
+//        this.assertJoinAssignable(join.getJoinType(), id);   In proper implementation this assignment should happen in reverse order
+        this.join = join;
+        this.join.setTaskId(this.id);
+    }
+
+    public String getId() {
+        return id;
     }
 }

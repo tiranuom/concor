@@ -30,8 +30,19 @@ public class AppConfig {
     @DependsOn("boot")
     public MOFlow moFlow() {
         MOFlow moFlow = new MOFlow();
-        moFlow.init();
-        Executors.newScheduledThreadPool(100).scheduleAtFixedRate((Runnable) () -> moFlow.apply(""), 100, 100, TimeUnit.MICROSECONDS);
+        try {
+            moFlow.init();
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+
+        Executors.newScheduledThreadPool(100).scheduleAtFixedRate((Runnable) () -> {
+            try {
+                moFlow.apply("");
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+        }, 100, 100, TimeUnit.MICROSECONDS);
         return moFlow;
     }
 
