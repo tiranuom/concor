@@ -5,6 +5,8 @@ import com.tix.concor.core.framework.Context;
 import com.tix.concor.core.framework.JoinType;
 import com.tix.concor.core.framework.task.SingleThreadedTask;
 
+import java.util.function.Consumer;
+
 public class SingleThreadedTaskWrapper<A, B> extends TaskWrapper<A, B> {
 
     private SingleThreadedTask<A, B> task;

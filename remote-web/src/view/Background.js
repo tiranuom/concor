@@ -15,12 +15,12 @@ class Background extends Component {
     render() {
         let {flows, error, clearError} = this.props;
 
-        if (!!error.length) {
+        if (error && !!error.length) {
             setTimeout(clearError, 2000)
         }
 
         return <Row>
-            {!!error.length &&
+            {error && !!error.length &&
             <Alert bsStyle={"danger"}>
                 {error}
             </Alert>

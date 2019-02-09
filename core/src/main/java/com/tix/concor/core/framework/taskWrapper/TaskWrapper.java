@@ -4,6 +4,7 @@ import com.tix.concor.core.framework.*;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public abstract class TaskWrapper<A, B> {
 

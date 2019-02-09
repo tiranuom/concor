@@ -1,7 +1,7 @@
 export default (state = "", action) => {
     switch (action.type) {
         case 'ERROR/CLEAR':
-            return "";
+            return null;
         case 'SCHEMA/FAILED':
             return action.payload.toString();
         case 'STATS/FAILED':
