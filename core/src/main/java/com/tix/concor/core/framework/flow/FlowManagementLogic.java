@@ -24,6 +24,10 @@ public abstract class FlowManagementLogic {
 
         Join join = new Join(initialBufferSize, Executors.newSingleThreadExecutor(), (flowId + ":" + ++counter), JoinType.SINGLE_THREADED);
         join.init();
+        return assignJoin(taskId, flow, join);
+    }
+
+    private ConfigureStatus assignJoin(String taskId, Flow flow, Join join) {
         try {
             flow.assignJoin(taskId, join);
             return ConfigureStatus.success();
@@ -40,14 +44,7 @@ public abstract class FlowManagementLogic {
 
         Join join = new Join(initialBufferSize, Executors.newCachedThreadPool(), (flowId + ":" + ++counter), JoinType.CACHED);
         join.init();
-        try {
-            flow.assignJoin(taskId, join);
-            return ConfigureStatus.success();
-        } catch (RemoteException e) {
-            join.destroy();
-            e.printStackTrace();
-            return ConfigureStatus.fail(e.getCause().getMessage());
-        }
+        return assignJoin(taskId, flow, join);
     }
 
     public ConfigureStatus addMultiThreadJoin(String flowId, String taskId, int threadCount) throws RuntimeException, RemoteException {
@@ -56,14 +53,7 @@ public abstract class FlowManagementLogic {
 
         Join join = new Join(initialBufferSize, Executors.newFixedThreadPool(threadCount), (flowId + ":" + ++counter), JoinType.MULTI_THREADED);
         join.init();
-        try {
-            flow.assignJoin(taskId, join);
-            return ConfigureStatus.success();
-        } catch (RemoteException e) {
-            join.destroy();
-            e.printStackTrace();
-            return ConfigureStatus.fail(e.getCause().getMessage());
-        }
+        return assignJoin(taskId, flow, join);
     }
 
     public ConfigureStatus addJoin(String flowId, String taskId, JoinType joinType, int threadCount) throws RemoteException {

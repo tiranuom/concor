@@ -2,26 +2,23 @@ package com.tix;
 
 import com.tix.concor.common.RMIBasedRemoteFlowManagementLogic;
 import com.tix.concor.core.framework.Boot;
-import com.tix.concor.core.framework.flow.FlowManagementLogic;
 import com.tix.concor.core.framework.flow.FlowManager;
 import com.tix.concor.core.framework.flow.RemoteFlowManagementLogic;
 import com.tix.concor.core.framework.flow.RemoteFlowManagementLogicAdaptor;
+import com.tix.mgateway.SessionManager;
 import com.tix.mgateway.mo.MOFlow;
-import net.sf.log4jdbc.sql.jdbcapi.DataSourceSpy;
-import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import com.tix.mgateway.mo.filters.router.MORouter;
+import com.tix.mgateway.mo.filters.router.domain.Route;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.Primary;
-import org.springframework.remoting.rmi.RmiServiceExporter;
 
-import javax.sql.DataSource;
 import java.rmi.RemoteException;
+import java.util.Arrays;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+
+//import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 
 @Configuration
 public class AppConfig {
@@ -60,15 +57,23 @@ public class AppConfig {
         return boot;
     }
 
-//    @Bean
-//    RmiServiceExporter exporter() throws RemoteException {
-//        Class<RMIBasedRemoteFlowManagementLogic> flowManagementLogicClass = RMIBasedRemoteFlowManagementLogic.class;
-//        RmiServiceExporter rmiServiceExporter = new RmiServiceExporter();
-//        rmiServiceExporter.setServiceInterface(flowManagementLogicClass);
-//        rmiServiceExporter.setServiceName(flowManagementLogicClass.getSimpleName());
-//        RemoteFlowManagementLogicAdaptor service = new RemoteFlowManagementLogicAdaptor(new RemoteFlowManagementLogic(), new FlowManager.FlowManagerConfig());
-//        rmiServiceExporter.setService(service);
-//        rmiServiceExporter.setRegistryPort(12000);
-//        return rmiServiceExporter;
-//    }
+    @Bean
+    SessionManager sessionManager() {
+        return new SessionManager(60000);
+    }
+
+    @Bean
+    MORouter moRouter() {
+        MORouter moRouter = new MORouter();
+        moRouter.populate(Arrays.asList(
+                new Route("070", "mobitel"),
+                new Route("071", "mobitel"),
+                new Route("072", "etisalat"),
+                new Route("075", "airtel"),
+                new Route("076", "dialog"),
+                new Route("077", "dialog"),
+                new Route("078", "hutch")
+        ));
+        return moRouter;
+    }
 }

@@ -7,6 +7,6 @@ public class MOInTranslator implements SimpleTask<String, MOMessage> {
 
     @Override
     public MOMessage apply(String s) throws Throwable {
-        return new MOMessage();
+        return new MOMessage("712555128", key);
     }
 }

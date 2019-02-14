@@ -4,18 +4,24 @@ import com.tix.concor.core.framework.flow.Flow;
 import com.tix.concor.core.framework.flow.Flows;
 import com.tix.mgateway.SessionManager;
 import com.tix.mgateway.mo.filters.*;
+import com.tix.mgateway.mo.filters.router.MORouter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class MOFlow {
 
     private Flow<String> flow;
 
-    private SessionManager sessionManager = new SessionManager();
+    @Autowired
+    private SessionManager sessionManager;
+    @Autowired
+    private MORouter moRouter;
+
 
     public void init() {
         flow = Flows.<String>create("mo-flow")
                 .map(new MOInTranslator(), "1")
                 .mapSingleThreaded(new MOSessionManagerWrapper(sessionManager), "2")
-                .map(new MORouter(), "3")
+                .map(moRouter, "3")
                 .mapSynchronizedRemote(new EndPointResolver(), "4")
                 .map(new ATTranslator(), "5")
                 .bind(new ATMessageSender(), "6")
