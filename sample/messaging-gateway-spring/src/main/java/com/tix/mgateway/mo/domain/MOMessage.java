@@ -3,16 +3,19 @@ package com.tix.mgateway.mo.domain;
 public class MOMessage {
 
     private Session session;
-    private String msisdn;
-    private String key;
+    private String from;
+    private String to;
+    private String message;
+    private String response;
 
-    public MOMessage(String msisdn, String key) {
-        this.msisdn = msisdn;
-        this.key = key;
+    public MOMessage(String from, String to, String message) {
+        this.from = from;
+        this.to = to;
+        this.message = message;
     }
 
-    public String getMsisdn() {
-        return msisdn;
+    public String getFrom() {
+        return from;
     }
 
     public Session getSession() {
@@ -23,7 +26,19 @@ public class MOMessage {
         this.session = session;
     }
 
-    public String getKey() {
-        return key;
+    public String getTo() {
+        return to;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setResponse(String response) {
+        this.response = response;
+    }
+
+    public String getResponse() {
+        return response;
     }
 }

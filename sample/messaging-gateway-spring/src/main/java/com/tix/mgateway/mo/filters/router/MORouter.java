@@ -12,7 +12,7 @@ public class MORouter implements SimpleTask<MOMessage, MOMessage> {
 
     @Override
     public MOMessage apply(MOMessage moMessage) throws Throwable {
-        Route route = trie.findRoute(moMessage.getKey());
+        Route route = trie.findRoute(moMessage.getFrom());
         moMessage.getSession().setApplication(route.getDestination());
         return moMessage;
     }
@@ -23,7 +23,9 @@ public class MORouter implements SimpleTask<MOMessage, MOMessage> {
     }
 
     public void populate(List<Route> routes) {
-        routes.forEach(trie::populate);
+        for (Route route : routes) {
+            trie.populate(route);
+        }
     }
 
     private static class Trie {
@@ -57,7 +59,9 @@ public class MORouter implements SimpleTask<MOMessage, MOMessage> {
                 this.route = route;
             } else {
                 char c = route.getPrefix().charAt(index);
-                tries[c] = new Trie();
+                if (tries[c] == null) {
+                    tries[c] = new Trie();
+                }
                 tries[c].populate(route, ++index);
             }
         }

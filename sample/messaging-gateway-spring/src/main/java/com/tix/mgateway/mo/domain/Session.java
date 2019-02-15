@@ -1,5 +1,7 @@
 package com.tix.mgateway.mo.domain;
 
+import com.tix.mgateway.repository.domain.RemoteInfo;
+
 import javax.print.attribute.standard.Destination;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -11,6 +13,7 @@ public class Session {
     private String sessionKey;
     private long lastUpdatedTime = System.currentTimeMillis();
     private String application;
+    private RemoteInfo remoteInfo;
 
     public Session(String sessionId) {
         this.sessionKey = sessionId;
@@ -47,5 +50,13 @@ public class Session {
 
     public String getApplication() {
         return application;
+    }
+
+    public void setApplicationInfo(RemoteInfo remoteInfo) {
+        this.remoteInfo = remoteInfo;
+    }
+
+    public RemoteInfo getRemoteInfo() {
+        return remoteInfo;
     }
 }

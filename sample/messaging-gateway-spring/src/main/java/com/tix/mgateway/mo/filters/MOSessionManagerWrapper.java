@@ -14,7 +14,7 @@ public class MOSessionManagerWrapper implements SingleThreadedTask<MOMessage, MO
 
     @Override
     public MOMessage apply(MOMessage moMessage) throws Throwable {
-        moMessage.setSession(sessionManager.getSession(moMessage.getMsisdn()));
+        moMessage.setSession(sessionManager.getSession(moMessage.getFrom()));
         return moMessage;
     }
 

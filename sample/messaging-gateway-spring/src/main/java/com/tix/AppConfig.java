@@ -7,6 +7,9 @@ import com.tix.concor.core.framework.flow.RemoteFlowManagementLogic;
 import com.tix.concor.core.framework.flow.RemoteFlowManagementLogicAdaptor;
 import com.tix.mgateway.SessionManager;
 import com.tix.mgateway.mo.MOFlow;
+import com.tix.mgateway.mo.filters.ATMessageSender;
+import com.tix.mgateway.mo.filters.EndPointResolver;
+import com.tix.mgateway.mo.filters.MOSessionManagerWrapper;
 import com.tix.mgateway.mo.filters.router.MORouter;
 import com.tix.mgateway.mo.filters.router.domain.Route;
 import org.springframework.context.annotation.Bean;
@@ -15,8 +18,6 @@ import org.springframework.context.annotation.DependsOn;
 
 import java.rmi.RemoteException;
 import java.util.Arrays;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 //import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 
@@ -24,42 +25,13 @@ import java.util.concurrent.TimeUnit;
 public class AppConfig {
 
     @Bean
-    @DependsOn("boot")
-    public MOFlow moFlow() {
-        MOFlow moFlow = new MOFlow();
-        try {
-            moFlow.init();
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-
-        Executors.newScheduledThreadPool(100).scheduleAtFixedRate((Runnable) () -> {
-            try {
-                moFlow.apply("");
-            } catch (Throwable t) {
-                t.printStackTrace();
-            }
-        }, 100, 100, TimeUnit.MICROSECONDS);
-        return moFlow;
-    }
-
-    @Bean
-    RMIBasedRemoteFlowManagementLogic remoteFlowManagementLogic() throws RemoteException {
-        RemoteFlowManagementLogic flowManagementLogic = (RemoteFlowManagementLogic) FlowManager.getInstance().getFlowManagementLogic();
-        return new RemoteFlowManagementLogicAdaptor(flowManagementLogic, new FlowManager.FlowManagerConfig());
-    }
-
-    @Bean
-    Boot boot() {
-        Boot boot = new Boot();
-        boot.setFlowManagerConfig(new FlowManager.FlowManagerConfig());
-        boot.init();
-        return boot;
-    }
-
-    @Bean
     SessionManager sessionManager() {
         return new SessionManager(60000);
+    }
+
+    @Bean
+    MOSessionManagerWrapper moSessionManagerWrapper(SessionManager sessionManager) {
+        return new MOSessionManagerWrapper(sessionManager);
     }
 
     @Bean
@@ -75,5 +47,35 @@ public class AppConfig {
                 new Route("078", "hutch")
         ));
         return moRouter;
+    }
+
+    @Bean
+    EndPointResolver endPointResolver() {
+        return new EndPointResolver();
+    }
+
+    @Bean
+    @DependsOn("boot")
+    public MOFlow moFlow() {
+        return new MOFlow();
+    }
+
+    @Bean
+    RMIBasedRemoteFlowManagementLogic remoteFlowManagementLogic() throws RemoteException {
+        RemoteFlowManagementLogic flowManagementLogic = (RemoteFlowManagementLogic) FlowManager.getInstance().getFlowManagementLogic();
+        return new RemoteFlowManagementLogicAdaptor(flowManagementLogic, new FlowManager.FlowManagerConfig());
+    }
+
+    @Bean
+    ATMessageSender atMessageSender() {
+        return new ATMessageSender();
+    }
+
+    @Bean
+    Boot boot() {
+        Boot boot = new Boot();
+        boot.setFlowManagerConfig(new FlowManager.FlowManagerConfig());
+        boot.init();
+        return boot;
     }
 }
