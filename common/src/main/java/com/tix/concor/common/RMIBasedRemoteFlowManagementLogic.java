@@ -13,7 +13,7 @@ public interface RMIBasedRemoteFlowManagementLogic extends Remote {
 
     Map<String, List<TaskEvent>> taskEvents() throws RemoteException;
 
-    ConfigureStatus addJoin(String flowId, String taskId, JoinType joinType, int threadCount) throws RemoteException;
+    ConfigureStatus addJoin(String flowId, String taskId, JoinType joinType, int threadCount, JoinTarget target) throws RemoteException;
 
     ConfigureStatus removeJoin(String flowId, String taskId) throws RemoteException;
 

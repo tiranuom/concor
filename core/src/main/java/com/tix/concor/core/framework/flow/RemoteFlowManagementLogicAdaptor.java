@@ -3,11 +3,8 @@ package com.tix.concor.core.framework.flow;
 import com.tix.concor.common.RMIBasedRemoteFlowManagementLogic;
 import com.tix.concor.core.framework.*;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.rmi.Naming;
-import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
@@ -42,8 +39,8 @@ public class RemoteFlowManagementLogicAdaptor extends UnicastRemoteObject implem
     }
 
     @Override
-    public ConfigureStatus addJoin(String flowId, String taskId, JoinType joinType, int threadCount) throws RemoteException {
-        return remoteFlowManagementLogic.addJoin(flowId, taskId, joinType, threadCount);
+    public ConfigureStatus addJoin(String flowId, String taskId, JoinType joinType, int threadCount, JoinTarget target) throws RemoteException {
+        return remoteFlowManagementLogic.addJoin(flowId, taskId, joinType, threadCount, target);
     }
 
     @Override

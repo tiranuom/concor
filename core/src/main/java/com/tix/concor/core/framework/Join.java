@@ -23,13 +23,15 @@ public class Join {
     private String joinId;
     private String taskId;
     private JoinType joinType;
+    private JoinTarget target;
 
-    public Join(int initialBufferSize, Executor executor, String joinId, JoinType joinType) {
+    public Join(int initialBufferSize, Executor executor, String joinId, JoinType joinType, JoinTarget target) {
 
         this.initialBufferSize = initialBufferSize;
         this.executor = executor;
         this.joinId = joinId;
         this.joinType = joinType;
+        this.target = target;
     }
 
     public void init() {
@@ -57,6 +59,10 @@ public class Join {
 
     public JoinType getJoinType() {
         return joinType;
+    }
+
+    public JoinTarget getTarget() {
+        return target;
     }
 
     public synchronized void handle(Runnable runnable, Context context) {

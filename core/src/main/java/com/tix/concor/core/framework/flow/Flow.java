@@ -6,6 +6,7 @@ import com.tix.concor.core.framework.taskWrapper.TaskWrapper;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class Flow<A> {
@@ -47,10 +48,10 @@ public class Flow<A> {
         return sampleCounter.incrementAndGet() & 0x00000011;
     }
 
-    public void init(FlowManager.ContextSupplier contextSupplier, Function<JoinType, Join> joinGenerator) {
+    public void init(FlowManager.ContextSupplier contextSupplier, BiFunction<JoinType, JoinTarget, Join> joinGenerator) {
         this.contextSupplier = contextSupplier;
         taskWrapper.setIndexes(0);
-        taskWrapper.init(new JoinAssignmentFunction(joinGenerator));
+        taskWrapper.init(new JoinAssignmentFunction(joinGenerator, JoinTarget.PRIMARY));
         System.out.println(taskWrapper);
     }
 

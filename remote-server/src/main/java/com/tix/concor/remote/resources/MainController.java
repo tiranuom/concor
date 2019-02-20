@@ -47,7 +47,7 @@ public class MainController {
     @CrossOrigin
     @PostMapping("/join/add")
     public Mono<ConfigureStatus> addJoin(@RequestBody AddJoinRequest addJoinRequest) throws RemoteException {
-        return Mono.just(service.addJoin(addJoinRequest.getFlowId(), addJoinRequest.getTaskId(), addJoinRequest.getJoinType(), addJoinRequest.getThreadCount()));
+        return Mono.just(service.addJoin(addJoinRequest.getFlowId(), addJoinRequest.getTaskId(), addJoinRequest.getJoinType(), addJoinRequest.getThreadCount(), addJoinRequest.getJoinTarget()));
     }
 
     @CrossOrigin

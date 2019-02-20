@@ -1,7 +1,6 @@
 package com.tix.concor.core.framework.taskWrapper;
 
-import com.tix.concor.core.framework.Context;
-import com.tix.concor.core.framework.Join;
+import com.tix.concor.core.framework.*;
 import com.tix.concor.core.framework.task.Continuation;
 import com.tix.concor.core.framework.task.TransitionTask;
 
@@ -16,6 +15,26 @@ public class TransitionTaskWrapper<A, B> extends TaskWrapper<A, B> {
     public TransitionTaskWrapper(TransitionTask<A, B> task, String id) {
         super(id);
         this.task = task;
+    }
+
+    @Override
+    public void init(JoinAssignmentFunction joinAssignmentFunction) {
+        joinAssignmentFunction.accept(JoinType.CACHED);
+        nextTask.init(joinAssignmentFunction.newSecondaryAssignmentFunction());
+    }
+
+    @Override
+    public void assignJoin(Join join) throws ConfigurationException {
+        if (join.getTarget() == JoinTarget.PRIMARY) super.assignJoin(join);
+        else {
+            this.continuationJoin = join;
+            this.continuationJoin.setTaskId(this.id);
+        }
+    }
+
+    @Override
+    public Join assignJoinIfMatched(String id, Join join, JoinType previousJoinType) throws ConfigurationException {
+        return super.assignJoinIfMatched(id, join, previousJoinType);
     }
 
     @Override

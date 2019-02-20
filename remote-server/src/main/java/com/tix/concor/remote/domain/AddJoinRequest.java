@@ -1,5 +1,6 @@
 package com.tix.concor.remote.domain;
 
+import com.tix.concor.core.framework.JoinTarget;
 import com.tix.concor.core.framework.JoinType;
 
 public class AddJoinRequest {
@@ -8,6 +9,7 @@ public class AddJoinRequest {
     private String taskId;
     private JoinType joinType;
     private int threadCount;
+    private JoinTarget joinTarget = JoinTarget.PRIMARY;
 
     public String getFlowId() {
         return flowId;
@@ -39,5 +41,13 @@ public class AddJoinRequest {
 
     public void setThreadCount(int threadCount) {
         this.threadCount = threadCount;
+    }
+
+    public void setJoinTarget(JoinTarget joinTarget) {
+        this.joinTarget = joinTarget;
+    }
+
+    public JoinTarget getJoinTarget() {
+        return joinTarget;
     }
 }
