@@ -26,6 +26,7 @@ public class SingleThreadedTaskWrapper<A, B> extends TaskWrapper<A, B> {
 
     @Override
     protected void applyNext(A a, Context context) {
+        FlowTraceLog.trace("SINGLE_THREADED|{}|{}|{}", id, context.getId(), a);
         if (context.isSuccessful()) {
             try {
                 nextTask.apply(task.apply(a), context);

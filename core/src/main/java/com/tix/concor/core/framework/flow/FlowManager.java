@@ -3,13 +3,25 @@ package com.tix.concor.core.framework.flow;
 import com.tix.concor.core.framework.Context;
 import com.tix.concor.core.framework.SniffingContext;
 import com.tix.concor.core.framework.StaticContext;
+import stormpot.*;
 
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 public class FlowManager {
 
     private static final FlowManager FLOW_MANAGER = new FlowManager();
-    private static final StaticContext STATIC_CONTEXT = new StaticContext();
+//    private static final StaticContext STATIC_CONTEXT = new StaticContext();
+
+    private static final BlazePool<StaticContext> contextPool;
+    private static final Timeout timeout = new Timeout(5, TimeUnit.MINUTES);
+
+    static {
+        ContextAllocator contextAllocator = new ContextAllocator();
+        Config<StaticContext> staticContextConfig = new Config<StaticContext>().setAllocator(contextAllocator);
+        contextPool = new BlazePool<>(staticContextConfig);
+    }
 
     private FlowManagerConfig config;
     private FlowManagementLogic flowManagementLogic = new RemoteFlowManagementLogic();
@@ -55,7 +67,11 @@ public class FlowManager {
                     flowManagementLogic.onStats(joinStats, taskStats, nextIndex, flow);
                 });
             }
-            return STATIC_CONTEXT;
+            try {
+                return contextPool.claim(timeout);
+            } catch (InterruptedException e) {
+                throw new RuntimeException("Cannot create context");
+            }
         };
     }
 
@@ -113,6 +129,19 @@ public class FlowManager {
 
         public void setBufferSize(int bufferSize) {
             this.bufferSize = bufferSize;
+        }
+    }
+
+    private static class ContextAllocator implements Allocator<StaticContext> {
+
+        @Override
+        public StaticContext allocate(Slot slot) throws Exception {
+            return new StaticContext(slot);
+        }
+
+        @Override
+        public void deallocate(StaticContext poolable) throws Exception {
+//            poolable.release();
         }
     }
 }

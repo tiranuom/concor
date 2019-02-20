@@ -5,11 +5,15 @@ import com.tix.concor.core.framework.flow.Flows;
 import com.tix.mgateway.SessionManager;
 import com.tix.mgateway.mo.filters.*;
 import com.tix.mgateway.mo.filters.router.MORouter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 
 public class MOFlow {
+
+    private static final Logger logger = LoggerFactory.getLogger(MOFlow.class);
 
     private Flow<String> flow;
 
@@ -35,6 +39,10 @@ public class MOFlow {
                 .map(new ATTranslator(), "5")
                 .bind(atMessageSender, "6")
                 .forEach(new MOTransLogger(), "7")
+                .catching(e -> {
+                    logger.error("An error occurred while executing the request", e);
+                    return null;
+                })
                 .build();
 
     }

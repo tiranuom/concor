@@ -1,12 +1,16 @@
 package com.tix.concor.core.framework.taskWrapper;
 
 import com.tix.concor.core.framework.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
 public abstract class TaskWrapper<A, B> {
+
+    protected static Logger FlowTraceLog = LoggerFactory.getLogger("FlowTrace");
 
     protected TaskWrapper<B, ?> nextTask;
 

@@ -14,6 +14,7 @@ public class SimpleTaskWrapper<A, B> extends TaskWrapper<A, B> {
 
     @Override
     protected void applyNext(A a, Context context) {
+        FlowTraceLog.trace("FUNCTIONAL|{}|{}|{}", id, context.getId(), a);
         if (context.isSuccessful()) {
             try {
                 nextTask.apply(task.apply(a), context);

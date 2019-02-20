@@ -10,6 +10,8 @@ public class Flows {
         TaskWrapper<A, A> taskWrapper = new TaskWrapper<A, A>(id + ":INIT") {
             @Override
             protected void applyNext(A a, Context context) {
+                FlowTraceLog.trace("INIT|{}|{}|{}", id, context.getId(), a);
+                context.init();
                 nextTask.apply(a, context);
             }
 

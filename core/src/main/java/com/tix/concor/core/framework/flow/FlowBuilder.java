@@ -111,6 +111,7 @@ public class FlowBuilder<S, A> {
 
             @Override
             protected void applyNext(Object o, Context context) {
+                FlowTraceLog.trace("Complete|{}|{}", flow.getId(), context.getId());
                 context.complete();
             }
         };

@@ -1,6 +1,14 @@
 package com.tix.concor.core.framework;
 
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
+
 public abstract class Context {
+
+    private static AtomicInteger counter = new AtomicInteger(0);
+    private static Supplier<Long> idGenerator = () -> System.currentTimeMillis() << 16 + (counter.incrementAndGet() & 0xFF);
+
+    private Long id = idGenerator.get();
 
     private Throwable throwable;
 
@@ -24,7 +32,15 @@ public abstract class Context {
 
     }
 
+    public void init() {
+
+    }
+
     public void complete() {
 
+    }
+
+    public Long getId() {
+        return id;
     }
 }

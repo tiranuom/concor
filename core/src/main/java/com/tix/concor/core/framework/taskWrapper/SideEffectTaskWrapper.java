@@ -13,6 +13,7 @@ public class SideEffectTaskWrapper<A> extends TaskWrapper<A, A> {
 
     @Override
     protected void applyNext(A a, Context context) {
+        FlowTraceLog.trace("SIDE_EFFECT|{}|{}|{}", id, context.getId(), a);
         if (context.isSuccessful()) {
             try {
                 task.apply(a);
