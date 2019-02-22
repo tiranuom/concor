@@ -1,6 +1,8 @@
 package com.tix.concor.core.framework.flow;
 
 import com.tix.concor.core.framework.Context;
+import com.tix.concor.core.framework.JoinAssignmentFunction;
+import com.tix.concor.core.framework.JoinType;
 import com.tix.concor.core.framework.task.*;
 import com.tix.concor.core.framework.taskWrapper.*;
 
@@ -104,6 +106,12 @@ public class FlowBuilder<S, A> {
 
     public Flow<S> build() {
         TaskWrapper<A, Void> finalizedTask = new TaskWrapper<A, Void>(flow.getId() + ":%d:COMPLETE") {
+
+            @Override
+            public void init(JoinAssignmentFunction joinAssignmentFunction) {
+                joinAssignmentFunction.accept(JoinType.CACHED);
+            }
+
             @Override
             protected String eventType() {
                 return "end";

@@ -39,8 +39,8 @@ public class TransitionTaskWrapper<A, B> extends TaskWrapper<A, B> {
 
     @Override
     protected void applyNext(A a, Context context) {
-        FlowTraceLog.trace("ASYNCHRONOUS_REMOTE|{}|{}", id, a);
         if (context.isSuccessful()) {
+            FlowTraceLog.trace("ASYNCHRONOUS_REMOTE|{}|{}", id, a);
             try {
                 task.apply(a, new Continuation<B>() {
                     @Override
@@ -57,7 +57,7 @@ public class TransitionTaskWrapper<A, B> extends TaskWrapper<A, B> {
                             FlowTraceLog.trace("ASYNCHRONOUS_REMOTE_SUCCESS|{}|{}|{}", id, context.getId(), a);
                             nextTask.apply(callable.call(), context);
                         } catch (Exception e) {
-                            context.setThrowable(e);
+                            context.setThrowable(e, a);
                             nextTask.apply(null, context);
                         }
                     }
@@ -74,15 +74,15 @@ public class TransitionTaskWrapper<A, B> extends TaskWrapper<A, B> {
                     private void handleError(Callable<Throwable> callable) {
                         try {
                             FlowTraceLog.trace("ASYNCHRONOUS_REMOTE_ERROR|{}|{}", id, a);
-                            context.setThrowable(callable.call());
+                            context.setThrowable(callable.call(), a);
                         } catch (Exception e) {
-                            context.setThrowable(e);
+                            context.setThrowable(e, a);
                         }
                         nextTask.apply(null, context);
                     }
                 });
             } catch (Throwable throwable) {
-                context.setThrowable(throwable);
+                context.setThrowable(throwable, a);
                 nextTask.apply(null, context);
             }
         } else {

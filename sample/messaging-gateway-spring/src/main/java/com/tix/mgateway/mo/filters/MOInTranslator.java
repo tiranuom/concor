@@ -7,7 +7,7 @@ public class MOInTranslator implements SimpleTask<String, MOMessage> {
 
     @Override
     public MOMessage apply(String s) throws Throwable {
-        String[] parts = s.split("|");
+        String[] parts = s.split("\\|");
         return new MOMessage(parts[0], parts[1], parts[2]);
     }
 }

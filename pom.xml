@@ -31,8 +31,8 @@
         <module>common</module>
         <module>core</module>
         <module>remote-server</module>
-        <module>sample/messaging-gateway</module>
         <module>sample/messaging-gateway-spring</module>
+        <module>sample/perf-simulator</module>
     </modules>
 
 

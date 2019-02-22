@@ -41,4 +41,15 @@ public class MOMessage {
     public String getResponse() {
         return response;
     }
+
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("MOMessage{");
+        sb.append("from='").append(from).append('\'');
+        sb.append(", to='").append(to).append('\'');
+        sb.append(", message='").append(message).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

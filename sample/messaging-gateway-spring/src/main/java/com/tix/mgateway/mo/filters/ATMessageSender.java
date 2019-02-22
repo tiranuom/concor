@@ -39,6 +39,6 @@ public class ATMessageSender implements TransitionTask<MOMessage, MOMessage> {
         });
 
 //        Thread.sleep(10);
-        continuation.continuing(() -> moMessage);
+//        continuation.continuing(() -> moMessage);
     }
 }

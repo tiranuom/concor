@@ -14,12 +14,12 @@ public class CatchTaskWrapper<A> extends TaskWrapper<A, A>{
 
     @Override
     protected void applyNext(A a, Context context) {
-        FlowTraceLog.trace("HANDLE_ERROR|{}|{}|{}", id, context.getId(), a);
         if (!context.isSuccessful()) {
+            FlowTraceLog.trace("HANDLE_ERROR|{}|{}|{}", id, context.getId(), context.recover(), context.getThrowable());
             try {
                 nextTask.apply(catchTask.onError(context.getThrowable()), context);
             } catch (Throwable throwable) {
-                context.setThrowable(throwable);
+                context.setThrowable(throwable, context.recover());
                 nextTask.apply(null, context);
             }
         } else {

@@ -9,8 +9,8 @@ public abstract class Context {
     private static Supplier<Long> idGenerator = () -> System.currentTimeMillis() << 16 + (counter.incrementAndGet() & 0xFF);
 
     private Long id = idGenerator.get();
-
     private Throwable throwable;
+    private Object lastKnown;
 
     public void hitJoin(Join join) {
 
@@ -20,8 +20,9 @@ public abstract class Context {
         return throwable;
     }
 
-    public void setThrowable(Throwable throwable) {
+    public void setThrowable(Throwable throwable, Object lastKnown) {
         this.throwable = throwable;
+        this.lastKnown = lastKnown;
     }
 
     public boolean isSuccessful() {
@@ -42,5 +43,9 @@ public abstract class Context {
 
     public Long getId() {
         return id;
+    }
+
+    public Object recover() {
+        return lastKnown;
     }
 }

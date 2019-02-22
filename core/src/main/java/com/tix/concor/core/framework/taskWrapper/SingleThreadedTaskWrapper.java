@@ -6,8 +6,6 @@ import com.tix.concor.core.framework.JoinAssignmentFunction;
 import com.tix.concor.core.framework.JoinType;
 import com.tix.concor.core.framework.task.SingleThreadedTask;
 
-import java.util.function.Consumer;
-
 public class SingleThreadedTaskWrapper<A, B> extends TaskWrapper<A, B> {
 
     private SingleThreadedTask<A, B> task;
@@ -26,12 +24,12 @@ public class SingleThreadedTaskWrapper<A, B> extends TaskWrapper<A, B> {
 
     @Override
     protected void applyNext(A a, Context context) {
-        FlowTraceLog.trace("SINGLE_THREADED|{}|{}|{}", id, context.getId(), a);
         if (context.isSuccessful()) {
+            FlowTraceLog.trace("SINGLE_THREADED|{}|{}|{}", id, context.getId(), a);
             try {
                 nextTask.apply(task.apply(a), context);
             } catch (Throwable throwable) {
-                context.setThrowable(throwable);
+                context.setThrowable(throwable, a);
                 nextTask.apply(null, context);
             }
         } else {

@@ -12,7 +12,7 @@ public class RemoteInfo {
     private String api_key;
     private String password;
 
-    @OneToMany(targetEntity = ServerInfo.class, mappedBy = "remoteId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = ServerInfo.class, mappedBy = "remoteId", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ServerInfo> serverInfo;
 
     public RemoteInfo(String remoteId, String api_key, String password, List<ServerInfo> serverInfo) {

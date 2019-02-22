@@ -14,12 +14,12 @@ public class SimpleTaskWrapper<A, B> extends TaskWrapper<A, B> {
 
     @Override
     protected void applyNext(A a, Context context) {
-        FlowTraceLog.trace("FUNCTIONAL|{}|{}|{}", id, context.getId(), a);
         if (context.isSuccessful()) {
+            FlowTraceLog.trace("FUNCTIONAL|{}|{}|{}", id, context.getId(), a);
             try {
                 nextTask.apply(task.apply(a), context);
             } catch (Throwable throwable) {
-                context.setThrowable(throwable);
+                context.setThrowable(throwable, a);
                 nextTask.apply(null, context);
             }
         } else {
