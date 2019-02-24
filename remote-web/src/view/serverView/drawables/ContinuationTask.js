@@ -1,6 +1,7 @@
 import React from 'react'
 import Queue from "./Queue";
 import JoinSelection from "./popover/JoinSelection";
+import {toTime} from "../Canves";
 
 export default function({x, y, task, itemId, queue, postQueue, onClick, onPostQueueClick, flowId}) {
     return <g transform={`translate(${x}, ${y}) scale(0.5)`} >
@@ -11,10 +12,18 @@ export default function({x, y, task, itemId, queue, postQueue, onClick, onPostQu
         </g>
 
         <g transform="translate(0,220)">
-            <path d="M 0 0 L 228 0" fill="none" stroke="#000000" strokeMiterlimit="10" pointerEvents="none"/>
+            <path d="M 0 0 L 128 0" fill="none" stroke="#000000" strokeMiterlimit="10" pointerEvents="none"/>
             <path d="M 4 -4 L 04 4" fill="none" stroke="#000000" strokeMiterlimit="10" pointerEvents="none"/>
-            <path d="M 224 4 L 224 -4" fill="none" stroke="#000000" strokeMiterlimit="10" pointerEvents="none"/>
-            <text x="120" y="20" fill="#000000" textAnchor="middle" fontSize="24px" fontFamily="Helvetica" alignmentBaseline={"central"}>{task.latency}
+            <path d="M 124 4 L 124 -4" fill="none" stroke="#000000" strokeMiterlimit="10" pointerEvents="none"/>
+            <text x="60" y="20" fill="#000000" textAnchor="middle" fontSize="24px" fontFamily="Helvetica" alignmentBaseline={"central"}>{toTime(task.latency)}
+            </text>
+        </g>
+
+        <g transform="translate(0,220)">
+            <path d="M 128 0 L 228 0" fill="none" stroke="#000000" strokeMiterlimit="10" pointerEvents="none"/>
+            <path d="M 232 -4 L 232 4" fill="none" stroke="#000000" strokeMiterlimit="10" pointerEvents="none"/>
+            <path d="M 124 4 L 124 -4" fill="none" stroke="#000000" strokeMiterlimit="10" pointerEvents="none"/>
+            <text x="180" y="20" fill="#000000" textAnchor="middle" fontSize="24px" fontFamily="Helvetica" alignmentBaseline={"central"}>{toTime(task.secondaryLatency)}
             </text>
         </g>
         <rect x="73" y="30" width="155" height="110" fill="#ffffff" stroke="#000000" pointerEvents="none"/>
@@ -29,17 +38,13 @@ export default function({x, y, task, itemId, queue, postQueue, onClick, onPostQu
         <Queue x={15} y={70} queue={task.queue}/>
         }
         <g transform="translate(0,30)">
-            <foreignObject>
-                <JoinSelection id={task.id} flowId={flowId}/>
-            </foreignObject>
+            <JoinSelection id={task.id} flowId={flowId}/>
         </g>
         {postQueue &&
         <Queue x={155} y={70} queue={postQueue} type={'s'}/>
         }
         <g transform="translate(120,30)">
-            <foreignObject>
-                <div onClick={onPostQueueClick && onPostQueueClick.bind(this)} style={{width: 110, height: 110, opacity: 0.1}}></div>
-            </foreignObject>
+            <div onClick={onPostQueueClick && onPostQueueClick.bind(this)} style={{width: 110, height: 110, opacity: 0.1}}></div>
         </g>
     </g>
 

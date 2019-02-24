@@ -109,7 +109,7 @@ public class FlowBuilder<S, A> {
 
             @Override
             public void init(JoinAssignmentFunction joinAssignmentFunction) {
-                joinAssignmentFunction.accept(JoinType.CACHED);
+                joinAssignmentFunction.accept(JoinType.MULTI_THREADED);
             }
 
             @Override

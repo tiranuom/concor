@@ -15,7 +15,7 @@ public class CatchTaskWrapper<A> extends TaskWrapper<A, A>{
     @Override
     protected void applyNext(A a, Context context) {
         if (!context.isSuccessful()) {
-            FlowTraceLog.trace("HANDLE_ERROR|{}|{}|{}", id, context.getId(), context.recover(), context.getThrowable());
+            FlowTraceLog.trace("HANDLE_ERROR|{}|{}|{}", id, context.getId(), context.recover());
             try {
                 nextTask.apply(catchTask.onError(context.getThrowable()), context);
             } catch (Throwable throwable) {

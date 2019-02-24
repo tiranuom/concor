@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Scheduler {
 
-    @Value("tps")
+    @Value("${tps}")
     private long tps;
 
     @Autowired
@@ -34,7 +34,7 @@ public class Scheduler {
         }
 
         long delay = 1000000 / tps; //in microseconds
-        scheduledFuture = Executors.newScheduledThreadPool(256)
+        scheduledFuture = Executors.newScheduledThreadPool(128)
                 .scheduleAtFixedRate(this::execute, 100, delay, TimeUnit.MICROSECONDS);
     }
 

@@ -32,7 +32,7 @@ public class SynchronizedRemoteTaskWrapper<A, B> extends TaskWrapper<A, B> {
     @Override
     public void init(JoinAssignmentFunction joinAssignmentFunction) {
         System.out.println("Initializing " + id + " with cached stage");
-        joinAssignmentFunction.accept(JoinType.CACHED);
+        joinAssignmentFunction.accept(JoinType.MULTI_THREADED);
         nextTask.init(joinAssignmentFunction.newAssignmentFunction());
     }
 

@@ -8,10 +8,10 @@ import java.util.stream.Stream;
 
 public class MessageProvider {
 
-    @Value("message.template")
+    @Value("${message.template}")
     private String messageTemplate;
 
-    private PrimitiveIterator.OfLong longStream = new Random().longs().iterator();
+    private PrimitiveIterator.OfLong longStream = new Random().longs(0, 100_000).iterator();
     private Iterator<String> prefixStream;
 
     @PostConstruct
@@ -28,7 +28,7 @@ public class MessageProvider {
         String prefix = prefixStream.next();
         Long suffix = longStream.next();
 
-        return messageTemplate.replace("{msisdn}", String.format("%s00%5d", prefix, suffix))
+        return messageTemplate.replace("{msisdn}", prefix + String.format("%07d", suffix))
                 .replace("{shortcode}", prefix)
                 .replace("{message}", "test");
     }

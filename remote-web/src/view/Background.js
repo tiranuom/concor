@@ -66,6 +66,11 @@ const mapStateToProps = (state) => {
                     } else {
                         task.queue = null;
                     }
+
+                    var secondaryTaskJoinStat = flowTaskStat.find(e => e.id === task.id + "/Resp" )
+                    if (!!secondaryTaskJoinStat) {
+                        task.secondaryLatency = secondaryTaskJoinStat.latency;
+                    }
                 })
             })
         }

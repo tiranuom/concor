@@ -16,6 +16,8 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <jsw.assemble.dir>target/generated-resources/appassembler/jsw/messaging-gateway</jsw.assemble.dir>
+        <resource.file.location>.</resource.file.location>
     </properties>
 
     <dependencies>
@@ -39,6 +41,100 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>appassembler-maven-plugin</artifactId>
+                <version>1.0</version>
+                <configuration>
+                    <repoPath>lib</repoPath>
+                    <repositoryLayout>flat</repositoryLayout>
+                    <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
+                    <assembleDirectory>${jsw.assemble.dir}</assembleDirectory>
+                    <defaultJvmSettings>
+                        <initialMemorySize>64M</initialMemorySize>
+                        <maxMemorySize>128M</maxMemorySize>
+                    </defaultJvmSettings>
+                    <daemons>
+                        <daemon>
+                            <id>perf-simulator</id>
+                            <mainClass>com.tix.App</mainClass>
+                            <platforms>
+                                <platform>jsw</platform>
+                            </platforms>
+                            <generatorConfigurations>
+                                <generatorConfiguration>
+                                    <generator>jsw</generator>
+                                    <configuration>
+                                        <property>
+                                            <name>wrapper.java.mainclass</name>
+                                            <value>com.tix.App</value>
+                                        </property>
+                                        <property>
+                                            <name>configuration.directory.in.classpath.first</name>
+                                            <value>conf</value>
+                                        </property>
+                                        <property>
+                                            <name>set.default.REPO_DIR</name>
+                                            <value>lib</value>
+                                        </property>
+                                        <property>
+                                            <name>wrapper.logfile</name>
+                                            <value>logs/wrapper.log</value>
+                                        </property>
+                                    </configuration>
+
+                                    <includes>
+                                        <include>linux-x86-64</include>
+                                    </includes>
+                                </generatorConfiguration>
+                            </generatorConfigurations>
+                        </daemon>
+                    </daemons>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>generate-daemons</goal>
+                            <goal>create-repository</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <id>config</id>
+                        <phase>install</phase>
+                        <configuration>
+                            <tasks>
+                                <mkdir dir="target/perf-simulator/logs"/>
+                                <copy todir="target/perf-simulator/bin">
+                                    <fileset dir="${jsw.assemble.dir}/bin"/>
+                                </copy>
+                                <copy todir="target/perf-simulator/lib">
+                                    <fileset dir="${jsw.assemble.dir}/lib"/>
+                                </copy>
+                                <copy todir="target/perf-simulator/conf">
+                                    <fileset dir="${jsw.assemble.dir}/conf"/>
+                                </copy>
+                                <copy todir="target/perf-simulator/conf">
+                                    <fileset dir="src/main/resources"/>
+                                </copy>
+                                <copy todir="target/perf-simulator/conf" overwrite="true">
+                                    <fileset dir="src/main/${resource.file.location}/resources"/>
+                                </copy>
+                                <chmod dir="target/perf-simulator/bin" perm="777" includes="**/**"/>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

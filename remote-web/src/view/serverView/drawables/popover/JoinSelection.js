@@ -55,9 +55,11 @@ class ClickableArea extends React.Component{
             </form>
         </Popover>
 
-        return <OverlayTrigger trigger={"click"} placement={"bottom"} overlay={selectionPopover} ref={ref => this.overlayTrigger = ref}>
-            <div style={{width: 70, height: 110}}></div>
-        </OverlayTrigger>;
+        return <foreignObject style={{width: 70, height: 110}}>
+            <OverlayTrigger trigger={"click"} placement={"bottom"} overlay={selectionPopover} ref={ref => this.overlayTrigger = ref}>
+                <div style={{width: 70, height: 110}}></div>
+            </OverlayTrigger>
+        </foreignObject>;
     }
 }
 

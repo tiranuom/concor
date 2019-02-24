@@ -13,8 +13,13 @@ public class StaticContext extends Context implements Poolable {
 
     @Override
     public void release() {
+        complete();
+    }
+
+    @Override
+    public void complete() {
         try {
-            complete();
+            super.complete();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

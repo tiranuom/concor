@@ -2,6 +2,17 @@ import React from 'react'
 
 import Flow from "./drawables/Flow";
 
+export const toTime = function (str) {
+    try {
+        var value = parseInt(str);
+        if (value / 1000 < 1) return value + "ns";
+        if (value / 1000000 < 1) return value / 1000 + "ms";
+        return value / 1000000 + "s";
+    } catch (e) {
+        return str;
+    }
+};
+
 export default function ({flows}) {
 
     return <div style={{padding: 5}}>

@@ -19,7 +19,7 @@ public class TransitionTaskWrapper<A, B> extends TaskWrapper<A, B> {
 
     @Override
     public void init(JoinAssignmentFunction joinAssignmentFunction) {
-        joinAssignmentFunction.accept(JoinType.CACHED);
+        joinAssignmentFunction.accept(JoinType.MULTI_THREADED);
         nextTask.init(joinAssignmentFunction.newSecondaryAssignmentFunction());
     }
 
@@ -54,6 +54,7 @@ public class TransitionTaskWrapper<A, B> extends TaskWrapper<A, B> {
 
                     private void handleContinuation(Callable<B> callable) {
                         try {
+                            context.hitTask(id + "/Resp");
                             FlowTraceLog.trace("ASYNCHRONOUS_REMOTE_SUCCESS|{}|{}|{}", id, context.getId(), a);
                             nextTask.apply(callable.call(), context);
                         } catch (Exception e) {
@@ -73,6 +74,7 @@ public class TransitionTaskWrapper<A, B> extends TaskWrapper<A, B> {
 
                     private void handleError(Callable<Throwable> callable) {
                         try {
+                            context.hitTask(id + "/Resp");
                             FlowTraceLog.trace("ASYNCHRONOUS_REMOTE_ERROR|{}|{}", id, a);
                             context.setThrowable(callable.call(), a);
                         } catch (Exception e) {

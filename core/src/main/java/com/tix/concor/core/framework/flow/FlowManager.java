@@ -19,7 +19,7 @@ public class FlowManager {
 
     static {
         ContextAllocator contextAllocator = new ContextAllocator();
-        Config<StaticContext> staticContextConfig = new Config<StaticContext>().setAllocator(contextAllocator);
+        Config<StaticContext> staticContextConfig = new Config<StaticContext>().setSize(1).setAllocator(contextAllocator);
         contextPool = new BlazePool<>(staticContextConfig);
     }
 
@@ -141,7 +141,7 @@ public class FlowManager {
 
         @Override
         public void deallocate(StaticContext poolable) throws Exception {
-//            poolable.release();
+            poolable.release();
         }
     }
 }

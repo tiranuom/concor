@@ -1,5 +1,6 @@
 import React from 'react'
 import Queue from "./Queue";
+import {toTime} from "../Canves";
 
 export default function({x, y, flowId, itemId, onClick = (e) => {}, task}) {
 
@@ -22,7 +23,7 @@ export default function({x, y, flowId, itemId, onClick = (e) => {}, task}) {
             <path d="M 0 0 L 120 0" fill="none" stroke="#000000" strokeMiterlimit="10" pointerEvents="none"/>
             <path d="M 04 -4 L 04 4" fill="none" stroke="#000000" strokeMiterlimit="10" pointerEvents="none"/>
             <path d="M 116 4 L 116 -4" fill="none" stroke="#000000" strokeMiterlimit="10" pointerEvents="none"/>
-            <text x="60" y="20" fill="#000000" textAnchor="middle" fontSize="24px" fontFamily="Helvetica" alignmentBaseline={"central"}>{task.latency}
+            <text x="60" y="20" fill="#000000" textAnchor="middle" fontSize="24px" fontFamily="Helvetica" alignmentBaseline={"central"}>{toTime(task.latency)}
             </text>
         </g>
         <g transform="translate(60,30)">

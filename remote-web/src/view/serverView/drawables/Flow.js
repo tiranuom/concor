@@ -9,25 +9,45 @@ import SideEffect from "./SideEffect";
 import Catch from "./Catch";
 import End from "./End";
 import {connect} from "react-redux";
+import {toTime} from "../Canves";
 
 export default function ({yOffset, flow}) {
 
     var linkStartPoint = null;
 
+    var joins = [];
+
+    var lastJoin = {};
+
     return <g transform={`translate(0, ${yOffset})`}>
         {flow.tasks.map((task, index) => {
             let xOffset = 100 + index * 160;
+
+            function appendJoin(start, end = start - 20) {
+                if (!!task.queue) {
+                    lastJoin.end = lastJoin.end || end;
+                    lastJoin = {
+                        join: task.queue,
+                        start: start
+                    };
+                    joins.push(lastJoin)
+                }
+            }
 
             switch (task.type) {
                 case 'start':
                     var lastLinkStartPoint = linkStartPoint;
                     linkStartPoint = xOffset + 85;
+
+                    appendJoin(linkStartPoint - 20);
+
                     return <g key={index}>
                         <Start flowId={flow.id} itemId={task.id} x={xOffset} y={0} task={task} />
                     </g>;
                 case 'simple':
                     var lastLinkStartPoint = linkStartPoint;
                     linkStartPoint = xOffset + 110;
+                    appendJoin(linkStartPoint - 100);
                     return <g key={index}>
                         <Arrow sx={lastLinkStartPoint} sy={35} ex={xOffset - lastLinkStartPoint - 10} />
                         <SimpleTask itemId={task.id} x={xOffset} y={0} task={task} flowId={flow.id}/>
@@ -35,6 +55,7 @@ export default function ({yOffset, flow}) {
                 case 'single-threaded':
                     var lastLinkStartPoint = linkStartPoint;
                     linkStartPoint = xOffset + 110;
+                    appendJoin(linkStartPoint - 100);
                     return <g key={index}>
                         <Arrow sx={lastLinkStartPoint} sy={35} ex={xOffset - lastLinkStartPoint - 10} />
                         <SingleThreadedTask itemId={task.id} x={xOffset} y={0} task={task} flowId={flow.id}/>
@@ -42,6 +63,7 @@ export default function ({yOffset, flow}) {
                 case 'synchronized-remote':
                     var lastLinkStartPoint = linkStartPoint;
                     linkStartPoint = xOffset + 110;
+                    appendJoin(linkStartPoint - 100);
                     return <g key={index}>
                         <Arrow sx={lastLinkStartPoint} sy={35} ex={xOffset - lastLinkStartPoint - 10} />
                         <SynchronizedRemoteTask itemId={task.id} x={xOffset} y={0} task={task} flowId={flow.id}/>
@@ -49,6 +71,8 @@ export default function ({yOffset, flow}) {
                 case 'asynchronous-remote':
                     var lastLinkStartPoint = linkStartPoint;
                     linkStartPoint = xOffset + 110;
+                    appendJoin(linkStartPoint - 100);
+                    lastJoin.end = xOffset + 60
                     return <g key={index}>
                         <Arrow sx={lastLinkStartPoint} sy={35} ex={xOffset - lastLinkStartPoint - 10} />
                         <ContinuationTask itemId={task.id} x={xOffset} y={0} task={task} flowId={flow.id}/>
@@ -56,13 +80,15 @@ export default function ({yOffset, flow}) {
                 case 'side-effect':
                     var lastLinkStartPoint = linkStartPoint;
                     linkStartPoint = xOffset + 110;
+                    appendJoin(linkStartPoint - 100);
                     return <g key={index}>
                         <Arrow sx={lastLinkStartPoint} sy={35} ex={xOffset - lastLinkStartPoint - 10} />
                         <SideEffect itemId={task.id} x={xOffset} y={0} task={task} flowId={flow.id}/>
                     </g>;
-                case 'catch':
+                case 'error':
                     var lastLinkStartPoint = linkStartPoint;
                     linkStartPoint = xOffset + 110;
+                    appendJoin(linkStartPoint - 100);
                     return <g key={index}>
                         <Arrow sx={lastLinkStartPoint} sy={35} ex={xOffset - lastLinkStartPoint - 10}/>
                         <Catch itemId={task.id} x={xOffset} y={0} task={task} flowId={flow.id}/>
@@ -70,6 +96,8 @@ export default function ({yOffset, flow}) {
                 case 'end':
                     var lastLinkStartPoint = linkStartPoint;
                     linkStartPoint = xOffset + 100;
+                    appendJoin(linkStartPoint - 100);
+                    lastJoin.end = xOffset;
                     return <g key={index}>
                         <Arrow sx={lastLinkStartPoint} sy={35} ex={xOffset - lastLinkStartPoint + 20} />
                         <End itemId={task.id} x={xOffset} y={0} task={task} flowId={flow.id}/>
@@ -77,6 +105,16 @@ export default function ({yOffset, flow}) {
             }
             return null;
         })}
+        <g transform={`translate(0, ${yOffset + 40})`}>
+            {joins.map(({start, end, join}) => {
+                return <g>
+                    <path d={`M ${start} 0 L ${end} 0`} fill={'none'} stroke={join.color} strokeMiterlimit="10" strokeWidth={1}/>
+                    <text x={(start + end) / 2} y="20" fill="#000000" textAnchor="middle" fontSize="10px" fontFamily="Helvetica" alignmentBaseline={"central"}>{toTime(join.latency)}
+                    </text>
+                </g>
+            })}
+
+        </g>
     </g>
 }
 

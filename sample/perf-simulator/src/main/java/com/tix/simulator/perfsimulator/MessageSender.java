@@ -6,13 +6,16 @@ import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class MessageSender {
 
     private OkHttpClient okHttpClient;
 
-    @Value("remote.url")
+    @Value("${remote.url}")
     private String remoteUrl;
+
     @Autowired
     private MessageCounter messageCounter;
 
@@ -20,6 +23,9 @@ public class MessageSender {
     @PostConstruct
     public void init() {
         okHttpClient = new OkHttpClient();
+
+        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> System.out.println(okHttpClient.connectionPool().connectionCount()), 1, 1, TimeUnit.SECONDS);
+
     }
 
     public void sendMessage(String message) {
@@ -36,7 +42,13 @@ public class MessageSender {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                messageCounter.onFail();
+                try {
+                    messageCounter.onSuccess();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    response.close();
+                }
             }
         });
     }

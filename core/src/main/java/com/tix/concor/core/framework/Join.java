@@ -87,7 +87,13 @@ public class Join {
         @Override
         public void onEvent(JoinTransferEvent joinEvent, long l, boolean b) throws Exception {
             joinEvent.context.hitJoin(Join.this);
-            joinEvent.runnable.run();
+            try {
+                joinEvent.runnable.run();
+            } catch (Throwable t) {
+                System.out.println("----------------------------------------------------------------");
+                t.printStackTrace();
+                System.out.println("----------------------------------------------------------------");
+            }
         }
     }
 
