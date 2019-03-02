@@ -17,7 +17,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <start-class>com.tix.App</start-class>
+        <start-class>com.tix.mgateway.App</start-class>
         <java.version>1.8</java.version>
         <lombok.version>1.14.8</lombok.version>
         <log4jdbc.log4j2.version>1.16</log4jdbc.log4j2.version>
@@ -99,6 +99,24 @@
             <artifactId>org-apache-commons-io</artifactId>
             <version>1.3.1-201002241208</version>
         </dependency>
+        <dependency>
+            <groupId>tanukisoft</groupId>
+            <artifactId>wrapper</artifactId>
+            <version>3.2.3</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>tanukisoft</groupId>
+            <artifactId>wrapper</artifactId>
+            <version>3.2.3</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.5</version>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
@@ -118,7 +136,7 @@
                     <daemons>
                         <daemon>
                             <id>messaging-gateway</id>
-                            <mainClass>com.tix.App</mainClass>
+                            <mainClass>com.tix.mgateway.AppRunner</mainClass>
                             <platforms>
                                 <platform>jsw</platform>
                             </platforms>
@@ -128,7 +146,7 @@
                                     <configuration>
                                         <property>
                                             <name>wrapper.java.mainclass</name>
-                                            <value>com.tix.App</value>
+                                            <value>com.tix.mgateway.AppRunner</value>
                                         </property>
                                         <property>
                                             <name>configuration.directory.in.classpath.first</name>

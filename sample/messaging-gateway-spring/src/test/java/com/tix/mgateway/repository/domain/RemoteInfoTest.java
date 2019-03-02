@@ -23,23 +23,23 @@ class RemoteInfoTest {
     void insertData() {
         List<RemoteInfo> remoteInfo = Arrays.asList(
                 new RemoteInfo("mobitel", "test", "test", Arrays.asList(
-                        new ServerInfo("mobitel_S1", "mobitel", 20, "http://localhost:9090/mobitel_S1"),
-                        new ServerInfo("mobitel_S2", "mobitel", 30, "http://localhost:9090/mobitel_S2"),
-                        new ServerInfo("mobitel_S3", "mobitel", 50, "http://localhost:9090/mobitel_S3")
+                        new ServerInfo("mobitel_S1", "mobitel", 20, "http://localhost:5555/server/mobitel_S1"),
+                        new ServerInfo("mobitel_S2", "mobitel", 30, "http://localhost:5555/server/mobitel_S2"),
+                        new ServerInfo("mobitel_S3", "mobitel", 50, "http://localhost:5555/server/mobitel_S3")
                 )),
                 new RemoteInfo("dialog", "test", "test", Arrays.asList(
-                        new ServerInfo("dialog_S1", "dialog", 20, "http://localhost:9090/dialog_S1"),
-                        new ServerInfo("dialog_S2", "dialog", 30, "http://localhost:9090/dialog_S2"),
-                        new ServerInfo("dialog_S3", "dialog", 50, "http://localhost:9090/dialog_S3")
+                        new ServerInfo("dialog_S1", "dialog", 20, "http://localhost:5555/server/dialog_S1"),
+                        new ServerInfo("dialog_S2", "dialog", 30, "http://localhost:5555/server/dialog_S2"),
+                        new ServerInfo("dialog_S3", "dialog", 50, "http://localhost:5555/server/dialog_S3")
                 )),
                 new RemoteInfo("etisalat", "test", "test", Arrays.asList(
-                        new ServerInfo("etisalat_S1", "etisalat", 20, "http://localhost:9090/etisalat_S1")
+                        new ServerInfo("etisalat_S1", "etisalat", 20, "http://localhost:5555/server/etisalat_S1")
                 )),
                 new RemoteInfo("hutch", "test", "test", Arrays.asList(
-                        new ServerInfo("hutch_S1", "hutch", 20, "http://localhost:9090/hutch_S1")
+                        new ServerInfo("hutch_S1", "hutch", 20, "http://localhost:5555/server/hutch_S1")
                 )),
                 new RemoteInfo("airtel", "test", "test", Arrays.asList(
-                        new ServerInfo("airtel_S1", "airtel", 20, "http://localhost:9090/airtel_S1")
+                        new ServerInfo("airtel_S1", "airtel", 20, "http://localhost:5555/server/airtel_S1")
                 )));
         serverConfigRepository.saveAll(remoteInfo);
     }

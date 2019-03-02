@@ -19,13 +19,17 @@ public class SniffingContext extends Context {
     @Override
     public void hitJoin(Join join) {
         long currentNano = System.nanoTime();
-        String id = join.getJoinId();
-        long bufferSize = join.getBufferSize();
-        long latency = currentNano - lastJoinUpdatedNano;
+        if (join != null) {
+            String id = join.getJoinId();
+            long bufferSize = join.getBufferSize();
+            long latency = currentNano - lastJoinUpdatedNano;
 
-        joinEvents.add(new JoinEvent(id, join.getTaskId(), latency, bufferSize, join.getJoinType()));
-        this.previousJoinId = id;
-        lastJoinUpdatedNano = currentNano;
+            joinEvents.add(new JoinEvent(id, join.getTaskId(), latency, bufferSize, join.getJoinType()));
+            this.previousJoinId = id;
+            lastJoinUpdatedNano = currentNano;
+        } else {
+//            lastJoinUpdatedNano = currentNano;
+        }
     }
 
     @Override

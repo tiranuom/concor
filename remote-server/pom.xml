@@ -13,7 +13,7 @@
 
     <properties>
 
-        <jsw.assemble.dir>target/generated-resources/appassembler/jsw/messaging-gateway</jsw.assemble.dir>
+        <jsw.assemble.dir>target/generated-resources/appassembler/jsw/remote-server</jsw.assemble.dir>
         <resource.file.location>.</resource.file.location>
     </properties>
 
@@ -38,6 +38,11 @@
             <artifactId>reactor-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>tanukisoft</groupId>
+            <artifactId>wrapper</artifactId>
+            <version>3.2.3</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -59,7 +64,7 @@
                     <daemons>
                         <daemon>
                             <id>remote-server</id>
-                            <mainClass>com.tix.App</mainClass>
+                            <mainClass>com.tix.concor.remote.RemoteServerApplicationRunner</mainClass>
                             <platforms>
                                 <platform>jsw</platform>
                             </platforms>
@@ -69,7 +74,7 @@
                                     <configuration>
                                         <property>
                                             <name>wrapper.java.mainclass</name>
-                                            <value>com.tix.App</value>
+                                            <value>com.tix.concor.remote.RemoteServerApplicationRunner</value>
                                         </property>
                                         <property>
                                             <name>configuration.directory.in.classpath.first</name>

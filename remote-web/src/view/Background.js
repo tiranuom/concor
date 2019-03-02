@@ -48,30 +48,40 @@ const mapStateToProps = (state) => {
         if (state.stats.status === "success") {
             flows.forEach(flow => {
                 var taskFlows = state.stats.data.tasks;
-                var flowTaskStat = taskFlows[flow.id]||[];
+                var flowTaskStats = taskFlows[flow.id]||[];
                 var joinFlows = state.stats.data.joins;
-                var flowJoinStat = joinFlows[flow.id] || [];
+                var flowJoinStats = joinFlows[flow.id] || [];
+
                 flow.tasks.forEach(task => {
-                    var taskFlowStat = flowTaskStat.find(e => e.id === task.id);
-                    if (!!taskFlowStat) {
-                        task.latency = taskFlowStat.latency
+                    var taskStat = flowTaskStats.find(e => e.id === task.id);
+                    if (!!taskStat) {
+                        task.latency = taskStat.latency
                     }
-                    var taskJoinStat = flowJoinStat.find(e => e.taskId === task.id);
-                    if (!!taskJoinStat) {
+                    var joinStat = flowJoinStats.find(e => e.taskId === task.id);
+                    if (!!joinStat) {
                         task.queue = {
-                            color: colorMapping[taskJoinStat.joinType],
-                            latency: taskJoinStat.latency,
-                            queueSize: taskJoinStat.bufferSize
+                            color: colorMapping[joinStat.joinType],
+                            latency: joinStat.latency,
+                            queueSize: joinStat.bufferSize
                         };
                     } else {
                         task.queue = null;
                     }
 
-                    var secondaryTaskJoinStat = flowTaskStat.find(e => e.id === task.id + "/Resp" )
+                    var secondaryTaskJoinStat = flowTaskStats.find(e => e.id === task.id + "/Resp" )
                     if (!!secondaryTaskJoinStat) {
                         task.secondaryLatency = secondaryTaskJoinStat.latency;
                     }
-                })
+                });
+
+                var tps = state.stats.data.tps;
+                flow.tps = tps[flow.id];
+                flow.latency = flowTaskStats.map(a=> a.latency).reduce((a, b) => a + b, 0);
+                flow.timeSeries = state.timeSeries.map(a => ({
+                    date: a.date,
+                    tps: a.tps[flow.id],
+                    latency: (a.tasks[flow.id] || []).map(a=> a.latency).reduce((a, b) => a + b, 0)
+                }));
             })
         }
 

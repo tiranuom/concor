@@ -19,7 +19,7 @@ public class FlowManager {
 
     static {
         ContextAllocator contextAllocator = new ContextAllocator();
-        Config<StaticContext> staticContextConfig = new Config<StaticContext>().setSize(1).setAllocator(contextAllocator);
+        Config<StaticContext> staticContextConfig = new Config<StaticContext>().setSize(4096).setAllocator(contextAllocator);
         contextPool = new BlazePool<>(staticContextConfig);
     }
 
@@ -67,11 +67,11 @@ public class FlowManager {
                     flowManagementLogic.onStats(joinStats, taskStats, nextIndex, flow);
                 });
             }
-            try {
-                return contextPool.claim(timeout);
-            } catch (InterruptedException e) {
-                throw new RuntimeException("Cannot create context");
-            }
+//            try {
+                return new StaticContext(null);//contextPool.claim(timeout);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException("Cannot create context");
+//            }
         };
     }
 

@@ -5,6 +5,9 @@ import com.tix.concor.core.framework.taskWrapper.TaskWrapper;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -17,12 +20,17 @@ public class Flow<A> {
 
     private AtomicInteger sampleCounter = new AtomicInteger(0);
 
+    private AtomicInteger tpsCounter = new AtomicInteger(0);
+    private int lastTps;
+
     Flow(TaskWrapper<A, A> taskWrapper, String id) {
         this.taskWrapper = taskWrapper;
         this.id = id;
+        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> lastTps = tpsCounter.getAndSet(0), 1, 1, TimeUnit.SECONDS);
     }
 
     public void apply(A a) {
+        tpsCounter.incrementAndGet();
         if (contextSupplier == null) {
             throw new RuntimeException("AbstractFlow is not properly initialized. Please register the flow in flow manager.");
         }
@@ -52,10 +60,13 @@ public class Flow<A> {
         this.contextSupplier = contextSupplier;
         taskWrapper.setIndexes(0);
         taskWrapper.init(new JoinAssignmentFunction(joinGenerator, JoinTarget.PRIMARY));
-        System.out.println(taskWrapper);
     }
 
     public String getId() {
         return id;
+    }
+
+    public int getTps() {
+        return lastTps;
     }
 }

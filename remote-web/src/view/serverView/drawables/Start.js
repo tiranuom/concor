@@ -2,14 +2,15 @@ import React from 'react'
 import Queue from "./Queue";
 import {toTime} from "../Canves";
 
-export default function({x, y, flowId, itemId, onClick = (e) => {}, task}) {
+export default function({x, y, flowId, itemId, onClick = (e) => {}, task, flow: {tps, latency}}) {
 
     return <g transform={`translate(${x}, ${y}) scale(0.5)`} >
         <ellipse cx="115" cy="85" rx="55" ry="55" fill="#ffffff" stroke="#000000" pointerEvents="none"/>
         <rect x="115.11" y="30" width="68.89" height="110" fill="#ffffff" stroke="#000000" pointerEvents="none"/>
         <g transform="translate(0.5,78.5)">
-            <text x="19" y="12" fill="#000000" textAnchor="end" fontSize="24px" fontFamily="Helvetica">{flowId}
-            </text>
+            <text x="19" y="12" fill="#000000" textAnchor="end" fontSize="24px" fontFamily="Helvetica">{flowId}</text>
+            <text x="19" y="45" fill="#000000" textAnchor="end" fontSize="24px" fontFamily="Helvetica">TPS : {tps}</text>
+            <text x="19" y="75" fill="#000000" textAnchor="end" fontSize="24px" fontFamily="Helvetica">Latency : {toTime(latency)}</text>
         </g>
         <g transform="translate(101.5,-20)">
             <text x="18" y="12" fill="#000000" textAnchor="middle" fontSize="24px" fontFamily="Helvetica">{itemId}

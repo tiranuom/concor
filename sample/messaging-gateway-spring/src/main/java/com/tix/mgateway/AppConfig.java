@@ -1,4 +1,4 @@
-package com.tix;
+package com.tix.mgateway;
 
 import com.tix.concor.common.RMIBasedRemoteFlowManagementLogic;
 import com.tix.concor.core.framework.Boot;

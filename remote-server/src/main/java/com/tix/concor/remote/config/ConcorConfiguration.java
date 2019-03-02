@@ -1,6 +1,7 @@
 package com.tix.concor.remote.config;
 
 import com.tix.concor.common.RMIBasedRemoteFlowManagementLogic;
+import com.tix.concor.remote.services.RemoteManagementLogicWrapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.remoting.rmi.RmiProxyFactoryBean;
@@ -16,7 +17,6 @@ public class ConcorConfiguration {
 
     @Bean
     RMIBasedRemoteFlowManagementLogic remoteFlowManagementLogic() throws RemoteException, NotBoundException {
-        Registry registry = LocateRegistry.getRegistry(12099);
-        return (RMIBasedRemoteFlowManagementLogic) registry.lookup("RMIBasedRemoteFlowManagementLogic");
+        return new RemoteManagementLogicWrapper();
     }
 }

@@ -16,7 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <jsw.assemble.dir>target/generated-resources/appassembler/jsw/messaging-gateway</jsw.assemble.dir>
+        <jsw.assemble.dir>target/generated-resources/appassembler/jsw/perf-simulator</jsw.assemble.dir>
         <resource.file.location>.</resource.file.location>
     </properties>
 
@@ -37,6 +37,12 @@
             <version>3.12.0</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>tanukisoft</groupId>
+            <artifactId>wrapper</artifactId>
+            <version>3.2.3</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -52,12 +58,12 @@
                     <assembleDirectory>${jsw.assemble.dir}</assembleDirectory>
                     <defaultJvmSettings>
                         <initialMemorySize>64M</initialMemorySize>
-                        <maxMemorySize>128M</maxMemorySize>
+                        <maxMemorySize>1024M</maxMemorySize>
                     </defaultJvmSettings>
                     <daemons>
                         <daemon>
                             <id>perf-simulator</id>
-                            <mainClass>com.tix.App</mainClass>
+                            <mainClass>com.tix.simulator.perfsimulator.PerfSimulatorApplicationRunner</mainClass>
                             <platforms>
                                 <platform>jsw</platform>
                             </platforms>
@@ -67,7 +73,7 @@
                                     <configuration>
                                         <property>
                                             <name>wrapper.java.mainclass</name>
-                                            <value>com.tix.App</value>
+                                            <value>com.tix.simulator.perfsimulator.PerfSimulatorApplicationRunner</value>
                                         </property>
                                         <property>
                                             <name>configuration.directory.in.classpath.first</name>

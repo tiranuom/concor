@@ -23,7 +23,9 @@ public class StaticContext extends Context implements Poolable {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            slot.release(this);
+            if (slot != null) {
+                slot.release(this);
+            }
         }
     }
 }

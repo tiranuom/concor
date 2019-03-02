@@ -7,27 +7,35 @@ import com.tix.concor.core.framework.TaskEvent;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.reducing;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
 public class RemoteFlowManagementLogic extends FlowManagementLogic {
 
-    Map<Flow, Map<Integer, List<JoinEvent>>> joinStatMap = new ConcurrentHashMap<>();
-    Map<Flow, Map<Integer, List<TaskEvent>>> taskStatMap = new ConcurrentHashMap<>();
+    Map<String, Map<Integer, List<JoinEvent>>> joinStatMap = new ConcurrentHashMap<>();
+    Map<String, Map<Integer, List<TaskEvent>>> taskStatMap = new ConcurrentHashMap<>();
+    Map<String, Integer> tpsMap = new ConcurrentHashMap<>();
 
     @Override
     public void onStats(List<JoinEvent> joinStats, List<TaskEvent> taskStats, int nextIndex, Flow flow) {
-        Map<Integer, List<JoinEvent>> joinStatsMap = joinStatMap.computeIfAbsent(flow, k -> new ConcurrentHashMap<>());
+        String id = flow.getId();
+        Map<Integer, List<JoinEvent>> joinStatsMap = joinStatMap.computeIfAbsent(id, k -> new ConcurrentHashMap<>());
         joinStatsMap.put(nextIndex, joinStats);
 
-        Map<Integer, List<TaskEvent>> taskStatsMap = taskStatMap.computeIfAbsent(flow, k -> new ConcurrentHashMap<>());
+        Map<Integer, List<TaskEvent>> taskStatsMap = taskStatMap.computeIfAbsent(id, k -> new ConcurrentHashMap<>());
         taskStatsMap.put(nextIndex, taskStats);
+
+        tpsMap.put(id, flow.getTps());
     }
 
     public Map<String, List<JoinEvent>> joinEvents() throws RemoteException {
-        return joinStatMap.entrySet().stream().collect(toMap(e -> e.getKey().getId(), e -> {
+        return joinStatMap.entrySet().stream().collect(toMap(Map.Entry::getKey, e -> {
 
             HashMap<String, List<JoinEvent>> merged = new HashMap<>();
 
@@ -42,7 +50,7 @@ public class RemoteFlowManagementLogic extends FlowManagementLogic {
     }
 
     public Map<String, List<TaskEvent>> taskEvents() throws RemoteException {
-        return taskStatMap.entrySet().stream().collect(toMap(e -> e.getKey().getId(), e -> {
+        return taskStatMap.entrySet().stream().collect(toMap(Map.Entry::getKey, e -> {
 
             HashMap<String, List<TaskEvent>> merged = new HashMap<>();
 
@@ -54,6 +62,10 @@ public class RemoteFlowManagementLogic extends FlowManagementLogic {
 
             return merged.values().stream().map(TaskEvent::merge).collect(Collectors.toList());
         }));
+    }
+
+    public Map<String, Integer> getTps() {
+        return tpsMap;
     }
 
 }

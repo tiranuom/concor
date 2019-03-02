@@ -83,6 +83,7 @@ public class TransitionTaskWrapper<A, B> extends TaskWrapper<A, B> {
                         nextTask.apply(null, context);
                     }
                 });
+                context.hitJoin(null);
             } catch (Throwable throwable) {
                 context.setThrowable(throwable, a);
                 nextTask.apply(null, context);

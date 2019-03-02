@@ -39,6 +39,11 @@ public class RemoteFlowManagementLogicAdaptor extends UnicastRemoteObject implem
     }
 
     @Override
+    public Map<String, Integer> tps() throws RemoteException {
+        return remoteFlowManagementLogic.getTps();
+    }
+
+    @Override
     public ConfigureStatus addJoin(String flowId, String taskId, JoinType joinType, int threadCount, JoinTarget target) throws RemoteException {
         return remoteFlowManagementLogic.addJoin(flowId, taskId, joinType, threadCount, target);
     }

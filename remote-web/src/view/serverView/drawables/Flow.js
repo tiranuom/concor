@@ -10,6 +10,8 @@ import Catch from "./Catch";
 import End from "./End";
 import {connect} from "react-redux";
 import {toTime} from "../Canves";
+import C3Chart from 'react-c3js';
+import 'react-c3js/package'
 
 export default function ({yOffset, flow}) {
 
@@ -40,9 +42,8 @@ export default function ({yOffset, flow}) {
                     linkStartPoint = xOffset + 85;
 
                     appendJoin(linkStartPoint - 20);
-
                     return <g key={index}>
-                        <Start flowId={flow.id} itemId={task.id} x={xOffset} y={0} task={task} />
+                        <Start flowId={flow.id} itemId={task.id} x={xOffset} y={0} task={task} flow={flow}/>
                     </g>;
                 case 'simple':
                     var lastLinkStartPoint = linkStartPoint;
@@ -114,6 +115,85 @@ export default function ({yOffset, flow}) {
                 </g>
             })}
 
+        </g>
+        <g transform={`translate(50, ${yOffset + 60})`}>
+            <foreignObject style={{width: 800, height: 300}}>
+                <C3Chart
+                    size={{
+                        width: 800,
+                        height: 300
+                    }}
+                    color={{
+                        pattern: ['#7e85c6']
+                    }}
+                    data={{
+                        x: 'x',
+                        columns: [
+                            ['x', ...(flow.timeSeries||[]).map(a => a.date)],
+                            ['tps', ...(flow.timeSeries||[]).map(a => a.tps)]
+                        ],
+                        type: 'bar'
+                    }}
+                    area={{
+                        zerobased: true
+                    }}
+                    axis={{
+                        x: {
+                            type: 'timeseries',
+                            tick: {
+                                format: '%H:%M:%S',
+                                rotate: 60
+                            }
+                        }
+                    }}
+                    grid={{
+                        y: {
+                            show: true
+                        }
+                    }}
+                />
+            </foreignObject>
+        </g>
+        <g transform={`translate(50, ${yOffset + 380})`}>
+            <foreignObject style={{width: 800, height: 300}}>
+                <C3Chart
+                    size={{
+                        width: 800,
+                        height: 300
+                    }}
+                    color={{
+                        pattern: ['#6daa77']
+                    }}
+                    data={{
+                        x: 'x',
+                        columns: [
+                            ['x', ...(flow.timeSeries||[]).map(a => a.date)],
+                            ['tps', ...(flow.timeSeries||[]).map(a => a.latency)]
+                        ],
+                        type: 'bar'
+                    }}
+                    area={{
+                        zerobased: true
+                    }}
+                    axis={{
+                        x: {
+                            type: 'timeseries',
+                            tick: {
+                                format: '%H:%M:%S',
+                                rotate: 60
+                            }
+                        }
+                    }}
+                    grid={{
+                        y: {
+                            show: true
+                        }
+                    }}
+                    transition={{
+                        duration: null
+                    }}
+                />
+            </foreignObject>
         </g>
     </g>
 }

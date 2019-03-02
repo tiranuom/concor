@@ -35,7 +35,7 @@ public class MainController {
     @CrossOrigin
     @GetMapping("/stats")
     public Mono<Stats> stats() throws RemoteException {
-        return Mono.just(new Stats(service.taskEvents(), service.joinEvents()));
+        return Mono.just(new Stats(service.taskEvents(), service.joinEvents(), service.tps()));
     }
 
     @CrossOrigin

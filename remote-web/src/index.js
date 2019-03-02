@@ -10,6 +10,7 @@ import reducer from './reducers/index'
 import { apiMiddleware } from 'redux-api-middleware';
 import logger from 'redux-logger'
 import thunk from 'redux-thunk'
+import 'c3/c3.css';
 
 // const store = createStore(reducer, {}, applyMiddleware(thunk, apiMiddleware, logger));
 const store = applyMiddleware(logger, thunk, apiMiddleware)(createStore)(reducer, {});

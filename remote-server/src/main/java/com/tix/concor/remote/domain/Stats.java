@@ -9,10 +9,12 @@ import java.util.Map;
 public class Stats {
     private Map<String, List<TaskEvent>> tasks;
     private Map<String, List<JoinEvent>> joins;
+    private Map<String, Integer> tps;
 
-    public Stats(Map<String, List<TaskEvent>> tasks, Map<String, List<JoinEvent>> joins) {
+    public Stats(Map<String, List<TaskEvent>> tasks, Map<String, List<JoinEvent>> joins, Map<String, Integer> tps) {
         this.tasks = tasks;
         this.joins = joins;
+        this.tps = tps;
     }
 
     public Map<String, List<TaskEvent>> getTasks() {
@@ -21,5 +23,9 @@ public class Stats {
 
     public Map<String, List<JoinEvent>> getJoins() {
         return joins;
+    }
+
+    public Map<String, Integer> getTps() {
+        return tps;
     }
 }
