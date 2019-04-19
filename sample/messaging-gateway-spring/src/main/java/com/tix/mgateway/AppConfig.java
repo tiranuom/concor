@@ -6,6 +6,8 @@ import com.tix.concor.core.framework.flow.FlowManager;
 import com.tix.concor.core.framework.flow.RemoteFlowManagementLogic;
 import com.tix.concor.core.framework.flow.RemoteFlowManagementLogicAdaptor;
 import com.tix.mgateway.mo.MOFlow;
+import com.tix.mgateway.mo.MOFlowI;
+import com.tix.mgateway.mo.PlainMOFlow;
 import com.tix.mgateway.mo.filters.ATMessageSender;
 import com.tix.mgateway.mo.filters.EndPointResolver;
 import com.tix.mgateway.mo.filters.MOSessionManagerWrapper;
@@ -55,9 +57,11 @@ public class AppConfig {
 
     @Bean
     @DependsOn("boot")
-    public MOFlow moFlow() {
+    public MOFlowI moFlow() {
+//        return new PlainMOFlow();
         return new MOFlow();
     }
+
 
     @Bean
     RMIBasedRemoteFlowManagementLogic remoteFlowManagementLogic() throws RemoteException {

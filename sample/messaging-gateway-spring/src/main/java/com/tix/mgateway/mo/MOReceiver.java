@@ -27,7 +27,7 @@ public class MOReceiver {
     private HttpServer httpServer;
 
     @Autowired
-    private MOFlow moFlow;
+    private MOFlowI moFlow;
 
 
     @PostConstruct
