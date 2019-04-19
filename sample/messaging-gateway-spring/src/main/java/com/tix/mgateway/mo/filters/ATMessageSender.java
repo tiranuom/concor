@@ -32,24 +32,32 @@ public class ATMessageSender implements TransitionTask<MOMessage, MOMessage> {
     @Override
     public void apply(MOMessage moMessage, Continuation<MOMessage> continuation) throws Throwable {
 
+        logger.debug("Sending message to remote server");
+
         Request request = new Request.Builder().url(moMessage.getSession().getRemoteInfo().getServerInfo().get(0).getUrl())
                 .post(RequestBody.create(MediaType.get("text/plain"), moMessage.getResponse()))
                 .build();
 
+        logger.debug("Message preparation completed");
+
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                logger.error("An error occurred while sending the message");
                 continuation.onError(() -> e);
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                logger.debug("Message successfully delivered");
                 continuation.continuing(() -> moMessage);
                 if (response.body() != null) {
                     response.body().close();
                 }
             }
         });
+
+        logger.debug("Message sent to the remote server");
 
 //        Thread.sleep(10);
 //        continuation.continuing(() -> moMessage);

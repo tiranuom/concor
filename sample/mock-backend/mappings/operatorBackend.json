@@ -8,6 +8,11 @@
     "body": "OK",
     "headers": {
       "Content-Type": "text/plain"
+    },
+    "delayDistribution": {
+      "type": "uniform",
+      "lower": 15,
+      "upper": 25
     }
   }
 }

@@ -32,22 +32,23 @@ public class MOFlow {
     @PostConstruct
     public void init() {
         flow = Flows.<String>create("mo-flow")
-                .map(new MOInTranslator(), "1")
-                .mapSingleThreaded(moSessionManagerWrapper, "2")
-                .map(moRouter, "3")
-                .mapSynchronizedRemote(endPointResolver, "4")
-                .map(new ATTranslator(), "5")
-                .bind(atMessageSender, "6")
-                .forEach(new MOTransLogger(), "7")
+                .map(new MOInTranslator(), "translator")
+                .mapSingleThreaded(moSessionManagerWrapper, "session Manager")
+                .map(moRouter, "Router")
+                .mapSynchronizedRemote(endPointResolver, "End Point Resolver")
+                .map(new ATTranslator(), "AT translator")
+                .bind(atMessageSender, "Message sender")
+                .forEach(new MOTransLogger(), "trans logger")
                 .catching(e -> {
                     logger.error("An error occurred while executing the request", e);
                     return null;
-                })
+                }, "Error Handler")
                 .build();
 
     }
     
     public void apply(String moMessage) {
+        logger.debug("MO Message received.");
         flow.apply(moMessage);
     }
     

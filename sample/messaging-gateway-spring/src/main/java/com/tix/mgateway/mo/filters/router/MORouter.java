@@ -3,17 +3,25 @@ package com.tix.mgateway.mo.filters.router;
 import com.tix.concor.core.framework.task.SimpleTask;
 import com.tix.mgateway.mo.domain.MOMessage;
 import com.tix.mgateway.mo.filters.router.domain.Route;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class MORouter implements SimpleTask<MOMessage, MOMessage> {
 
+    private static final Logger logger = LoggerFactory.getLogger(MORouter.class);
+
     private Trie trie = new Trie();
 
     @Override
     public MOMessage apply(MOMessage moMessage) throws Throwable {
+
+        logger.debug("Selecting the route");
         Route route = trie.findRoute(moMessage.getFrom());
         moMessage.getSession().setApplication(route.getDestination());
+
+        logger.debug("Router Selection successful");
         return moMessage;
     }
 

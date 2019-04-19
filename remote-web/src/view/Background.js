@@ -62,7 +62,8 @@ const mapStateToProps = (state) => {
                         task.queue = {
                             color: colorMapping[joinStat.joinType],
                             latency: joinStat.latency,
-                            queueSize: joinStat.bufferSize
+                            queueSize: joinStat.bufferSize,
+                            threadCount: joinStat.activeThreadCount
                         };
                     } else {
                         task.queue = null;
@@ -79,8 +80,10 @@ const mapStateToProps = (state) => {
                 flow.latency = flowTaskStats.map(a=> a.latency).reduce((a, b) => a + b, 0);
                 flow.timeSeries = state.timeSeries.map(a => ({
                     date: a.date,
-                    tps: a.tps[flow.id],
-                    latency: (a.tasks[flow.id] || []).map(a=> a.latency).reduce((a, b) => a + b, 0)
+                    tps: a.tps[flow.id] || 0,
+                    latency: a.latency[flow.id],
+                    averageTps: a.averageTps[flow.id],
+                    averageLatency: a.averageLatency[flow.id]
                 }));
             })
         }

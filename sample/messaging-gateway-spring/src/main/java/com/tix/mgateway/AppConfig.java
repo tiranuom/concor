@@ -5,7 +5,6 @@ import com.tix.concor.core.framework.Boot;
 import com.tix.concor.core.framework.flow.FlowManager;
 import com.tix.concor.core.framework.flow.RemoteFlowManagementLogic;
 import com.tix.concor.core.framework.flow.RemoteFlowManagementLogicAdaptor;
-import com.tix.mgateway.SessionManager;
 import com.tix.mgateway.mo.MOFlow;
 import com.tix.mgateway.mo.filters.ATMessageSender;
 import com.tix.mgateway.mo.filters.EndPointResolver;
@@ -25,13 +24,13 @@ import java.util.Arrays;
 public class AppConfig {
 
     @Bean
-    SessionManager sessionManager() {
-        return new SessionManager(60000);
+    SessionManagerI sessionManager() {
+        return new SimpleSessionManager();
     }
 
     @Bean
-    MOSessionManagerWrapper moSessionManagerWrapper(SessionManager sessionManager) {
-        return new MOSessionManagerWrapper(sessionManager);
+    MOSessionManagerWrapper moSessionManagerWrapper(SessionManagerI sessionManagerI) {
+        return new MOSessionManagerWrapper(sessionManagerI);
     }
 
     @Bean

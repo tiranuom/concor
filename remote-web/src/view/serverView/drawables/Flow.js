@@ -124,15 +124,19 @@ export default function ({yOffset, flow}) {
                         height: 300
                     }}
                     color={{
-                        pattern: ['#7e85c6']
+                        pattern: ['#c0c7e8', '#0a008a']
                     }}
                     data={{
                         x: 'x',
                         columns: [
                             ['x', ...(flow.timeSeries||[]).map(a => a.date)],
-                            ['tps', ...(flow.timeSeries||[]).map(a => a.tps)]
+                            ['tps', ...(flow.timeSeries||[]).map(a => a.tps)],
+                            ['averageTps', ...(flow.timeSeries||[]).map(a => a.averageTps)]
                         ],
-                        type: 'bar'
+                        type: 'bar',
+                        types: {
+                            averageTps: 'line'
+                        }
                     }}
                     area={{
                         zerobased: true
@@ -162,15 +166,19 @@ export default function ({yOffset, flow}) {
                         height: 300
                     }}
                     color={{
-                        pattern: ['#6daa77']
+                        pattern: ['#98b09b', '#005e0c']
                     }}
                     data={{
                         x: 'x',
                         columns: [
                             ['x', ...(flow.timeSeries||[]).map(a => a.date)],
-                            ['tps', ...(flow.timeSeries||[]).map(a => a.latency)]
+                            ['latency', ...(flow.timeSeries||[]).map(a => a.latency / 1000000)],
+                            ['averageLatency', ...(flow.timeSeries||[]).map(a => a.averageLatency / 1000000)]
                         ],
-                        type: 'bar'
+                        type: 'bar',
+                        types: {
+                            averageLatency: 'line'
+                        }
                     }}
                     area={{
                         zerobased: true

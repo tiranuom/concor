@@ -6,7 +6,7 @@
     <artifactId>messaging-gateway-spring</artifactId>
     <packaging>jar</packaging>
 
-    <name>Spring Boot Blank Project (from https://github.com/making/spring-boot-blank)</name>
+    <name>Messaging Gateway</name>
 
     <parent>
         <groupId>com.tix</groupId>

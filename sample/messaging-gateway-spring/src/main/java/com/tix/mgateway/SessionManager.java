@@ -2,7 +2,7 @@ package com.tix.mgateway;
 
 import com.tix.mgateway.mo.domain.Session;
 
-public class SessionManager {
+public class SessionManager implements SessionManagerI {
 
     private Trie trie = new Branch();
     private long sessionTimeout = 60000;
@@ -11,6 +11,7 @@ public class SessionManager {
         this.sessionTimeout = sessionTimeout;
     }
 
+    @Override
     public Session getSession(String sessionKey) {
         return trie.getSession(sessionKey, 0);
     }

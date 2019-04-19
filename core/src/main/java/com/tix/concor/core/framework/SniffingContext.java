@@ -22,9 +22,10 @@ public class SniffingContext extends Context {
         if (join != null) {
             String id = join.getJoinId();
             long bufferSize = join.getBufferSize();
+            long activeThreadCount = join.getActiveThreadCount();
             long latency = currentNano - lastJoinUpdatedNano;
 
-            joinEvents.add(new JoinEvent(id, join.getTaskId(), latency, bufferSize, join.getJoinType()));
+            joinEvents.add(new JoinEvent(id, join.getTaskId(), latency, bufferSize, activeThreadCount, join.getJoinType()));
             this.previousJoinId = id;
             lastJoinUpdatedNano = currentNano;
         } else {

@@ -4,6 +4,7 @@ export default function ({x, y, queue, type = 'ns'}) {
 
     let color = queue.color || "red"
     let queueSize = queue.queueSize;
+    let threadCount = queue.threadCount;
 
     return <g transform={`translate(${x}, ${y})`}>
         <g transform={'scale(0.5)'}>
@@ -16,7 +17,7 @@ export default function ({x, y, queue, type = 'ns'}) {
             {type !== 's' && <path d="M 47 80 L -63 210" fill="none" stroke="#000000" strokeMiterlimit="10" pointerEvents="none"/> }
         </g>
         <g transform={type === 's' ? "translate(60,110)" : "translate(-60,110)"}>
-            <text x="18" y="12" fill="#000000" textAnchor="middle" fontSize="24px" fontFamily="Helvetica" alignmentBaseline={"central"}>{queueSize}
+            <text x="18" y="12" fill="#000000" textAnchor="middle" fontSize="24px" fontFamily="Helvetica" alignmentBaseline={"central"}>{queueSize}/{threadCount}
             </text>
         </g>
     </g>

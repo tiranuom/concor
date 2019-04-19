@@ -7,6 +7,7 @@ import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class Join {
 
@@ -47,6 +48,11 @@ public class Join {
 
     public long getBufferSize() {
         return initialBufferSize - ringBuffer.remainingCapacity();
+    }
+
+    public long getActiveThreadCount() {
+        if (joinType == JoinType.SINGLE_THREADED) return 1;
+        return ((ThreadPoolExecutor) executor).getQueue().size();
     }
 
     public String getTaskId() {

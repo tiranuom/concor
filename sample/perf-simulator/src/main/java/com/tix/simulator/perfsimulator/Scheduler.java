@@ -24,6 +24,11 @@ public class Scheduler {
     @PostConstruct
     public void init() {
         reset(tps);
+
+        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+            tps += 200;
+            reset(tps);
+        }, 2, 1, TimeUnit.MINUTES);
     }
 
 

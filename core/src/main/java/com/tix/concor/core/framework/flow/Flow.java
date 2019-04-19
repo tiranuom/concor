@@ -53,7 +53,7 @@ public class Flow<A> {
     }
 
     int nextIndex() {
-        return sampleCounter.incrementAndGet() & 0x00000011;
+        return sampleCounter.incrementAndGet() & 0xF0;
     }
 
     public void init(FlowManager.ContextSupplier contextSupplier, BiFunction<JoinType, JoinTarget, Join> joinGenerator) {
