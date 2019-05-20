@@ -13,6 +13,12 @@ public class Scheduler {
     @Value("${tps}")
     private long tps;
 
+    @Value("${period}")
+    private long incrementPeriod;
+
+    @Value("${step}")
+    private long incrementStep;
+
     @Autowired
     private MessageSender messageSender;
 
@@ -26,9 +32,9 @@ public class Scheduler {
         reset(tps);
 
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
-            tps += 200;
+            tps += incrementStep;
             reset(tps);
-        }, 2, 1, TimeUnit.MINUTES);
+        }, incrementPeriod, incrementPeriod, TimeUnit.SECONDS);
     }
 
 

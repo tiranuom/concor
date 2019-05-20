@@ -59,7 +59,7 @@ public class FlowManager {
     private ContextSupplier getContextSupplier(Flow flow) {
         return () -> {
             int nextIndex = flow.nextIndex();
-            if ((nextIndex & config.samplePeriod) == 0 ||           //0th element
+            if (config.isEnabled() && (nextIndex & config.samplePeriod) == 0 ||           //0th element
                     (nextIndex & config.samplePeriod) == 0b10 ||    //2nd element
                     (nextIndex & config.samplePeriod) == 0b100      //4th element
             ) {
@@ -90,6 +90,7 @@ public class FlowManager {
         private String host = "localhost";
         private int port = 12099;
         private int bufferSize = 1024;
+        private boolean enabled = true;
 
         public int getSamplePeriod() {
             return samplePeriod;
@@ -129,6 +130,14 @@ public class FlowManager {
 
         public void setBufferSize(int bufferSize) {
             this.bufferSize = bufferSize;
+        }
+
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
         }
     }
 

@@ -43,6 +43,7 @@ public class PlainMOFlow implements MOFlowI {
             moMsg = endPointResolver.apply(moMsg);
             moMsg = atTranslator.apply(moMsg);
             MOMessage finalMoMsg = moMsg;
+            moTransLogger.apply(finalMoMsg);
             atMessageSender.apply(moMsg, new Continuation<MOMessage>() {
                 @Override
                 public void continuing(Callable<MOMessage> callable) {

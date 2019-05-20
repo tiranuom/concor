@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.net.URL;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ATMessageSender implements TransitionTask<MOMessage, MOMessage> {
 
@@ -19,13 +19,17 @@ public class ATMessageSender implements TransitionTask<MOMessage, MOMessage> {
 
     private OkHttpClient client;
 
+    private AtomicReference<DurationData> durationData = new AtomicReference<>(new DurationData());
+
     @PostConstruct
     public void init() {
         client = new OkHttpClient();
-        client.dispatcher().setMaxRequestsPerHost(100);
+        client.dispatcher().setMaxRequestsPerHost(400);
 
-        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() ->
-                logger.info("Connection Count [{}]", client.connectionPool().connectionCount()),  1, 1, TimeUnit.SECONDS);
+        Executors.newSingleThreadScheduledExecutor()
+                .scheduleAtFixedRate(
+                        () -> logger.info("Connection Count [{}]| average time [{} ms]", client.connectionPool().connectionCount(), durationData.getAndSet(new DurationData()).avg())
+                        ,  1, 1, TimeUnit.SECONDS);
     }
 
 
@@ -40,16 +44,20 @@ public class ATMessageSender implements TransitionTask<MOMessage, MOMessage> {
 
         logger.debug("Message preparation completed");
 
+        long before = System.currentTimeMillis();
+
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 logger.error("An error occurred while sending the message");
+                durationData.updateAndGet(data -> data.addDuration(System.currentTimeMillis() - before));
                 continuation.onError(() -> e);
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 logger.debug("Message successfully delivered");
+                durationData.updateAndGet(data -> data.addDuration(System.currentTimeMillis() - before));
                 continuation.continuing(() -> moMessage);
                 if (response.body() != null) {
                     response.body().close();
@@ -61,5 +69,20 @@ public class ATMessageSender implements TransitionTask<MOMessage, MOMessage> {
 
 //        Thread.sleep(10);
 //        continuation.continuing(() -> moMessage);
+    }
+
+    private class DurationData {
+        int count = 0;
+        long totalDuration = 0;
+
+        private DurationData addDuration(long duration) {
+            count++;
+            totalDuration += duration;
+            return this;
+        }
+
+        private long avg() {
+            return count != 0 ? totalDuration/count : 0;
+        }
     }
 }

@@ -24,8 +24,8 @@ public class EndPointResolver implements SynchronizedRemoteTask<MOMessage, MOMes
 
     @PostConstruct
     public void init() {
-        Executors.newSingleThreadScheduledExecutor()
-                .scheduleAtFixedRate(() -> remoteInfoCache.clear(), 1, 1, TimeUnit.SECONDS);
+//        Executors.newSingleThreadScheduledExecutor()
+//                .scheduleAtFixedRate(() -> remoteInfoCache.clear(), 1, 1, TimeUnit.SECONDS);
     }
 
     @Autowired
@@ -36,7 +36,10 @@ public class EndPointResolver implements SynchronizedRemoteTask<MOMessage, MOMes
 
         logger.debug("Resolving destination information");
 
-        Optional<RemoteInfo> remoteInfo = serverConfigRepository.findByRemoteId(moMessage.getSession().getApplication());
+        Optional<RemoteInfo> remoteInfo  = remoteInfoCache
+                .computeIfAbsent(moMessage.getSession().getApplication(), serverConfigRepository::findByRemoteId);
+
+//        Optional<RemoteInfo> remoteInfo = serverConfigRepository.findByRemoteId(moMessage.getSession().getApplication());
 
         remoteInfo.ifPresent(moMessage.getSession()::setApplicationInfo);
 

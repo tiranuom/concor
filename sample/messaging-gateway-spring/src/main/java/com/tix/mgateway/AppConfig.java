@@ -58,7 +58,9 @@ public class AppConfig {
     @Bean
     @DependsOn("boot")
     public MOFlowI moFlow() {
-//        return new PlainMOFlow();
+//        PlainMOFlow plainMOFlow = new PlainMOFlow();
+//        plainMOFlow.init();
+//        return plainMOFlow;
         return new MOFlow();
     }
 

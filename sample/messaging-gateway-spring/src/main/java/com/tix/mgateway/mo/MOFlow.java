@@ -2,7 +2,6 @@ package com.tix.mgateway.mo;
 
 import com.tix.concor.core.framework.flow.Flow;
 import com.tix.concor.core.framework.flow.Flows;
-import com.tix.mgateway.SessionManager;
 import com.tix.mgateway.mo.filters.*;
 import com.tix.mgateway.mo.filters.router.MORouter;
 import org.slf4j.Logger;
@@ -40,10 +39,7 @@ public class MOFlow implements MOFlowI {
                 .map(new ATTranslator(), "AT translator")
                 .bind(atMessageSender, "Message sender")
                 .forEach(new MOTransLogger(), "trans logger")
-                .catching(e -> {
-                    logger.error("An error occurred while executing the request", e);
-                    return null;
-                }, "Error Handler")
+                .catching(new Catching(), "Error Handler")
                 .build();
 
     }
@@ -53,5 +49,5 @@ public class MOFlow implements MOFlowI {
         logger.debug("MO Message received.");
         flow.apply(moMessage);
     }
-    
+
 }
