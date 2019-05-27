@@ -29,7 +29,7 @@ public class ATMessageSender implements TransitionTask<MOMessage, MOMessage> {
         Executors.newSingleThreadScheduledExecutor()
                 .scheduleAtFixedRate(
                         () -> logger.info("Connection Count [{}]| average time [{} ms]", client.connectionPool().connectionCount(), durationData.getAndSet(new DurationData()).avg())
-                        ,  1, 1, TimeUnit.SECONDS);
+                        , 1, 1, TimeUnit.SECONDS);
     }
 
 
@@ -82,7 +82,7 @@ public class ATMessageSender implements TransitionTask<MOMessage, MOMessage> {
         }
 
         private long avg() {
-            return count != 0 ? totalDuration/count : 0;
+            return count != 0 ? totalDuration / count : 0;
         }
     }
 }

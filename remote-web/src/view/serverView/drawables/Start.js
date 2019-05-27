@@ -12,7 +12,7 @@ export default function({x, y, flowId, itemId, onClick = (e) => {}, task, flow: 
             <text x="19" y="45" fill="#000000" textAnchor="end" fontSize="24px" fontFamily="Helvetica">TPS : {tps}</text>
             <text x="19" y="75" fill="#000000" textAnchor="end" fontSize="24px" fontFamily="Helvetica">Latency : {toTime(latency)}</text>
         </g>
-        <g transform="translate(101.5,-20)">
+        <g transform="translate(101.5,-20) rotate(-10)">
             <text x="18" y="12" fill="#000000" textAnchor="middle" fontSize="24px" fontFamily="Helvetica">{itemId}
             </text>
         </g>

@@ -32,7 +32,7 @@ public class RemoteFlowManagementLogic extends FlowManagementLogic {
     }
 
     public Map<String, List<JoinEvent>> joinEvents() throws RemoteException {
-        return joinStatMap.entrySet().stream().collect(toMap(Map.Entry::getKey, e -> {
+        Map<String, List<JoinEvent>> results = joinStatMap.entrySet().stream().collect(toMap(Map.Entry::getKey, e -> {
 
             HashMap<String, List<JoinEvent>> merged = new HashMap<>();
 
@@ -44,10 +44,12 @@ public class RemoteFlowManagementLogic extends FlowManagementLogic {
 
             return merged.values().stream().map(JoinEvent::merge).collect(Collectors.toList());
         }));
+//        joinStatMap.clear();
+        return results;
     }
 
     public Map<String, List<TaskEvent>> taskEvents() throws RemoteException {
-        return taskStatMap.entrySet().stream().collect(toMap(Map.Entry::getKey, e -> {
+        Map<String, List<TaskEvent>> result = taskStatMap.entrySet().stream().collect(toMap(Map.Entry::getKey, e -> {
 
             HashMap<String, List<TaskEvent>> merged = new HashMap<>();
 
@@ -59,10 +61,15 @@ public class RemoteFlowManagementLogic extends FlowManagementLogic {
 
             return merged.values().stream().map(TaskEvent::merge).collect(Collectors.toList());
         }));
+//        taskStatMap.clear();
+        return result;
     }
 
     public Map<String, Integer> getTps() {
-        return tpsMap;
+        HashMap<String, Integer> results = new HashMap<>();
+        tpsMap.forEach(results::put);
+//        results.clear();
+        return results;
     }
 
 }

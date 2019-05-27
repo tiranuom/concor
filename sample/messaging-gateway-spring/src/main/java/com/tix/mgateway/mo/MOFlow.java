@@ -43,7 +43,7 @@ public class MOFlow implements MOFlowI {
                 .build();
 
     }
-    
+
     @Override
     public void apply(String moMessage) {
         logger.debug("MO Message received.");

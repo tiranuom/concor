@@ -15,8 +15,10 @@ export const toTime = function (str) {
 
 export default function ({flows}) {
 
-    return <div style={{padding: 5}}>
-        <svg style={{width: '100%', height: 1000, borderColor: 'red', borderStyle: 'solid', borderWidth: 1}}>
+    var maxFlowLength = Math.max(...flows.map(flow => (flow.tasks || []).length))
+
+    return <div style={{padding: 5, width: '100%', marginTop: 50}}>
+        <svg style={{width: 200 + maxFlowLength * 150, height: window.innerHeight - 80, borderWidth: 1}}>
             <defs>
                 <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth" viewBox="0 0 20 20">
                     <path d="M0,0 L0,6 L9,3 z" />

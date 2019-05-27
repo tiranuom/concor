@@ -7,7 +7,7 @@ export default function({x, y, task, itemId, flowId}) {
 
     return <g transform={`translate(${x}, ${y}) scale(0.5)`} >
         <rect x="4" y="30" width="224" height="110" fill="#ffffff" stroke="#000000" pointerEvents="none"/>
-        <g transform="translate(97.5,-20)">
+        <g transform="translate(97.5,-20) rotate(-10)">
             <text x="18" y="12" fill="#000000" textAnchor="middle" fontSize="24px" fontFamily="Helvetica">{itemId}
             </text>
         </g>

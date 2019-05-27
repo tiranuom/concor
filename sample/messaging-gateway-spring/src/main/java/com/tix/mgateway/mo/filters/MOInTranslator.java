@@ -18,7 +18,7 @@ public class MOInTranslator implements SimpleTask<String, MOMessage> {
         Msg msg = GSON.fromJson(s, Msg.class);
         return new MOMessage(msg.msisdn, msg.shortCode, msg.message);
     }
-    
+
     private class Msg {
         private String msisdn, shortCode, message;
 

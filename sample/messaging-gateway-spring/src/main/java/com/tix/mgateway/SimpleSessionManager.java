@@ -5,7 +5,7 @@ import com.tix.mgateway.mo.domain.Session;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SimpleSessionManager implements SessionManagerI{
+public class SimpleSessionManager implements SessionManagerI {
 
     private Map<String, Session> sessionMap = new ConcurrentHashMap<>();
 

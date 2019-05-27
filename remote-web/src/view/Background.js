@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import Canves from "./serverView/Canves";
 import {connect} from 'react-redux'
 import {clearError, getSchema, getStats} from "../actions/actions";
-import {Alert, Col, Row} from "react-bootstrap";
+import {Alert, Col, Row, Navbar, Nav, NavDropdown, Form, FormControl, Button} from "react-bootstrap";
 
 
 class Background extends Component {
@@ -20,11 +20,15 @@ class Background extends Component {
         }
 
         return <Row>
+            <Navbar bg="primary" variant="dark" fixedTop>
+                <Navbar.Brand href="#home">Concur UI </Navbar.Brand>
+            </Navbar>
             {error && !!error.length &&
-            <Alert bsStyle={"danger"}>
+            <Alert bsStyle={"danger"} styles={{position: 'absolute'}}>
                 {error}
             </Alert>
             }
+
             <Col>
             {!!flows &&
             <Canves flows={flows}/>

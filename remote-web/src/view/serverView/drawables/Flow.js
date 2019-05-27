@@ -21,6 +21,15 @@ export default function ({yOffset, flow}) {
 
     var lastJoin = {};
 
+    console.log(flow.timeSeries)
+
+    let timeSeries = (flow.timeSeries||[]).map(a => {
+        a.averageLatency = a.averageLatency || 0;
+        a.averageTps = a.averageTps || 0;
+        a.latency = a.latency || 0;
+        return a;
+    })
+
     return <g transform={`translate(0, ${yOffset})`}>
         {flow.tasks.map((task, index) => {
             let xOffset = 100 + index * 160;
@@ -129,9 +138,9 @@ export default function ({yOffset, flow}) {
                     data={{
                         x: 'x',
                         columns: [
-                            ['x', ...(flow.timeSeries||[]).map(a => a.date)],
-                            ['tps', ...(flow.timeSeries||[]).map(a => a.tps)],
-                            ['averageTps', ...(flow.timeSeries||[]).map(a => a.averageTps)]
+                            ['x', ...(timeSeries).map(a => a.date)],
+                            ['tps', ...(timeSeries).map(a => a.tps)],
+                            ['averageTps', ...(timeSeries).map(a => a.averageTps)]
                         ],
                         type: 'bar',
                         types: {
@@ -171,9 +180,9 @@ export default function ({yOffset, flow}) {
                     data={{
                         x: 'x',
                         columns: [
-                            ['x', ...(flow.timeSeries||[]).map(a => a.date)],
-                            ['latency', ...(flow.timeSeries||[]).map(a => a.latency / 1000000)],
-                            ['averageLatency', ...(flow.timeSeries||[]).map(a => a.averageLatency / 1000000)]
+                            ['x', ...(timeSeries).map(a => a.date)],
+                            ['latency', ...(timeSeries).map(a => a.latency / 1000000)],
+                            ['averageLatency', ...(timeSeries).map(a => a.averageLatency / 1000000)]
                         ],
                         type: 'bar',
                         types: {

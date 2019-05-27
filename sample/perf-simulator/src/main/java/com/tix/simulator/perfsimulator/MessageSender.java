@@ -47,6 +47,9 @@ public class MessageSender {
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
+                    if (response.body() != null) {
+                        response.body().close();
+                    }
                     response.close();
                 }
             }

@@ -22,6 +22,7 @@ public class SessionManager implements SessionManagerI {
 
     private interface Trie {
         Session getSession(String sessionKey, int index);
+
         boolean invalidate(String sessionKey, int index);
     }
 
@@ -70,7 +71,7 @@ public class SessionManager implements SessionManagerI {
         public Session getSession(String sessionKey, int index) {
             if (session == null || !session.isValid(sessionTimeout)) {
                 session = new Session(sessionKey);
-            } 
+            }
             return session;
         }
 

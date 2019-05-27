@@ -36,7 +36,7 @@ public class EndPointResolver implements SynchronizedRemoteTask<MOMessage, MOMes
 
         logger.debug("Resolving destination information");
 
-        Optional<RemoteInfo> remoteInfo  = remoteInfoCache
+        Optional<RemoteInfo> remoteInfo = remoteInfoCache
                 .computeIfAbsent(moMessage.getSession().getApplication(), serverConfigRepository::findByRemoteId);
 
 //        Optional<RemoteInfo> remoteInfo = serverConfigRepository.findByRemoteId(moMessage.getSession().getApplication());

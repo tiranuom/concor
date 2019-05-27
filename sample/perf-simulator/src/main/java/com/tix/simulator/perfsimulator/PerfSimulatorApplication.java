@@ -11,19 +11,23 @@ public class PerfSimulatorApplication {
         SpringApplication.run(PerfSimulatorApplication.class, args);
     }
 
-    @Bean public MessageProvider messageProvider() {
+    @Bean
+    public MessageProvider messageProvider() {
         return new MessageProvider();
     }
 
-    @Bean public MessageSender messageSender() {
+    @Bean
+    public MessageSender messageSender() {
         return new MessageSender();
     }
 
-    @Bean public Scheduler scheduler() {
+    @Bean
+    public Scheduler scheduler() {
         return new Scheduler();
     }
 
-    @Bean public MessageCounter messageCounter() {
+    @Bean
+    public MessageCounter messageCounter() {
         return new MessageCounter();
     }
 }

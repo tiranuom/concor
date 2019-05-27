@@ -34,11 +34,9 @@
       "type": "object",
       "description": "Arbitrary metadata to be used for e.g. tagging, documentation. Can also be used to find and remove stubs."
     },
-
     "request": {
       "$ref": "request-pattern.schema.json"
     },
-
     "response": {
       "$ref": "response-definition.schema.json"
     }
@@ -46,7 +44,6 @@
   "example": {
     "id": "76ada7b0-49ae-4229-91c4-396a36f18e09",
     "priority": 3,
-
     "request": {
       "method": "GET",
       "url": "/some/thing",

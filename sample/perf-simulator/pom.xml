@@ -73,7 +73,8 @@
                                     <configuration>
                                         <property>
                                             <name>wrapper.java.mainclass</name>
-                                            <value>com.tix.simulator.perfsimulator.PerfSimulatorApplicationRunner</value>
+                                            <value>com.tix.simulator.perfsimulator.PerfSimulatorApplicationRunner
+                                            </value>
                                         </property>
                                         <property>
                                             <name>configuration.directory.in.classpath.first</name>
